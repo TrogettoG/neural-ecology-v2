@@ -105,6 +105,9 @@ class Orchestrator:
         # Paso 2: Actualización de clusters
         self.field.update_clusters()
 
+        # Paso 2b: Selección competitiva — absorción, fragmentación, decaimiento
+        self.field.competitive_selection()
+
         # Paso 3: Detección de tensiones
         self.field.detect_tensions()
 

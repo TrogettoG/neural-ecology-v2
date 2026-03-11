@@ -191,6 +191,128 @@ class CognitiveField:
         for cid in empty:
             del self.clusters[cid]
 
+    # ── PASO 2b: Selección competitiva ───────────────────────────────
+
+    def competitive_selection(self):
+        """
+        El campo aprende a decidir qué regiones merecen sobrevivir.
+
+        Cuatro mecanismos orgánicos (no poda arbitraria):
+
+        A. Absorción: cluster fuerte en tensión persistente con débil
+           absorbe señales del débil.
+        B. Costo de fragmentación: cuantos más clusters, más caro
+           sostener los débiles (energía global).
+        C. Decaimiento diferencial: clusters periféricos decaen más
+           rápido que clusters centrales.
+        D. Ventaja por centralidad: vitalidad favorece a quien tiene
+           más tensiones estructurales activas.
+        """
+        if len(self.clusters) < 3:
+            return   # sin competencia con menos de 3 clusters
+
+        # ── Score de vitalidad por cluster ────────────────────────
+        # Combina C, R, intensidad activa y centralidad en tensiones
+        tension_count = {}  # cluster_id → nº de tensiones estructurales
+        for t in self.tensions:
+            if t.intensity >= 0.35:
+                tension_count[t.cluster_a] = tension_count.get(t.cluster_a, 0) + 1
+                tension_count[t.cluster_b] = tension_count.get(t.cluster_b, 0) + 1
+
+        vitality = {}
+        for cid, cluster in self.clusters.items():
+            intensity = cluster.total_intensity(self.signals)
+            centrality = tension_count.get(cid, 0) / max(len(self.tensions), 1)
+            vitality[cid] = (
+                0.35 * cluster.contradiction +
+                0.25 * cluster.resonance +
+                0.20 * min(1.0, intensity / 3.0) +
+                0.20 * centrality
+            )
+
+        if not vitality:
+            return
+
+        sorted_clusters = sorted(vitality.items(), key=lambda x: x[1], reverse=True)
+        max_vitality    = sorted_clusters[0][1]
+
+        # ── A. Absorción competitiva ──────────────────────────────
+        # Para cada tensión estructural persistente: el más vital
+        # absorbe 1 señal débil del más débil
+        for tension in self.tensions:
+            if tension.intensity < 0.35 or tension.cycles_active < 4:
+                continue
+            va = vitality.get(tension.cluster_a, 0)
+            vb = vitality.get(tension.cluster_b, 0)
+            if abs(va - vb) < 0.15:
+                continue   # demasiado parejos, no absorber
+            strong_id = tension.cluster_a if va > vb else tension.cluster_b
+            weak_id   = tension.cluster_b if va > vb else tension.cluster_a
+            strong    = self.clusters.get(strong_id)
+            weak      = self.clusters.get(weak_id)
+            if not strong or not weak:
+                continue
+            # Encontrar señal más débil del cluster débil
+            weak_sigs = sorted(
+                [self.signals[sid] for sid in weak.signal_ids if sid in self.signals],
+                key=lambda s: s.intensity
+            )
+            if weak_sigs:
+                migrant = weak_sigs[0]
+                if migrant.intensity < 0.30:   # solo señales débiles migran
+                    weak.signal_ids.remove(migrant.id)
+                    strong.signal_ids.append(migrant.id)
+                    migrant.cluster_id = strong_id
+                    self.log(
+                        f"[ABSORB] '{weak.label[:20]}' → '{strong.label[:20]}' "
+                        f"(Δv={abs(va-vb):.2f})"
+                    )
+
+        # ── B. Costo de fragmentación ─────────────────────────────
+        # Cada cluster por encima de 6 tiene costo extra de energía
+        FRAGMENT_THRESHOLD = 6
+        excess = max(0, len(self.clusters) - FRAGMENT_THRESHOLD)
+        if excess > 0:
+            # Los clusters más débiles pagan el costo extra
+            weakest = sorted_clusters[-excess:]
+            fragment_cost = excess * 0.10
+            self.energy -= fragment_cost
+
+        # ── C. Decaimiento diferencial ────────────────────────────
+        # Clusters periféricos (vitalidad < 30% del máximo) decaen
+        if max_vitality > 0:
+            for cid, v in vitality.items():
+                if v < max_vitality * 0.30:
+                    cluster = self.clusters[cid]
+                    # Reducir intensidad de sus señales más débiles
+                    weak_sigs = [
+                        self.signals[sid] for sid in cluster.signal_ids
+                        if sid in self.signals and self.signals[sid].intensity < 0.25
+                    ]
+                    for sig in weak_sigs[:2]:
+                        sig.intensity *= 0.80
+                    if weak_sigs:
+                        self.log(
+                            f"[DECAY] '{cluster.label[:25]}' periférico "
+                            f"(v={v:.2f} < {max_vitality*0.30:.2f})"
+                        )
+
+        # ── D. Ventaja por centralidad ────────────────────────────
+        # Clusters centrales (vitalidad > 70% del máximo) refuerzan
+        # sus señales más intensas
+        if max_vitality > 0:
+            for cid, v in vitality.items():
+                if v > max_vitality * 0.70:
+                    cluster = self.clusters[cid]
+                    top_sigs = sorted(
+                        [self.signals[sid] for sid in cluster.signal_ids
+                         if sid in self.signals],
+                        key=lambda s: s.intensity,
+                        reverse=True
+                    )[:2]
+                    for sig in top_sigs:
+                        sig.intensity = min(1.0, sig.intensity * 1.05)
+
     # ── PASO 3: Detección de tensiones ────────────────────────────
 
     def detect_tensions(self):
