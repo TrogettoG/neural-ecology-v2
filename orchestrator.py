@@ -111,6 +111,12 @@ class Orchestrator:
         # Paso 3: Detección de tensiones
         self.field.detect_tensions()
 
+        # Paso 3b: Síntesis semántica intra-episodio
+        await self.field.run_semantic_synthesis()
+
+        # Paso 3c: Resonancia cruzada — ecos entre clusters en tensión
+        self.field.cross_pollinate()
+
         # Paso 4: Cálculo de resonancia
         self.field.calculate_resonance()
 

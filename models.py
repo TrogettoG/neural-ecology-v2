@@ -174,3 +174,31 @@ class NeuronDecision:
     payload: str = ""
     spawn_tendency: Optional[Tendency] = None
     spawn_deep: bool = False
+
+# ── Relación semántica entre clusters ─────────────────────────────
+
+class RelationType(str, Enum):
+    CONTRADICCION      = "contradicción"
+    TENSION_DIALETICA  = "tensión dialéctica"
+    COMPLEMENTO        = "complemento"
+    REFORMULACION      = "reformulación"
+    INDEPENDENCIA      = "independencia conceptual"
+
+
+@dataclass
+class SemanticRelation:
+    tension_id: str
+    type: RelationType
+    description: str          # frase que describe la relación
+    evaluated_at_cycle: int
+    novelty_vs_prev: float = 1.0  # 0=idéntica a síntesis anterior, 1=completamente nueva
+
+
+# ── Cluster de síntesis (extiende Cluster) ────────────────────────
+# No necesita subclase: usa Cluster con type="synthesis" en label
+# y un campo extra para trackear qué tensión lo generó
+@dataclass
+class SynthesisCluster(Cluster):
+    source_tension_id: str = ""
+    relation_type: str = ""
+    synthesis_cycle: int = 0

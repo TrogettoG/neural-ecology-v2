@@ -5,13 +5,15 @@ No es un broker de mensajes. Es un ecosistema informacional.
 Las neuronas no se hablan directamente. Interactúan a través del campo.
 """
 
+import asyncio
+import json
 import math
 import random
 from typing import Optional
 
 from models import (
-    Action, Cluster, NeuronDecision, Signal, SignalType,
-    Tendency, Tension, Trace,
+    Action, Cluster, NeuronDecision, RelationType, SemanticRelation,
+    Signal, SignalType, SynthesisCluster, Tendency, Tension, Trace,
 )
 from memory import Memory
 from config import (
@@ -54,7 +56,12 @@ class CognitiveField:
         # Historial de novedad global (para cierre)
         self._novelty_history: list[float] = []
         self._last_densify_cycle: int = 0
+        self._last_absorb_cycle:  int = 0
         self._soft_close_streak: int = 0
+        self.semantic_relations: list = []   # SemanticRelation por episodio
+        self.synthesis_clusters: list = []   # ids de SynthesisClusters
+        self._last_synthesis_cycle: int = 0
+        self._last_synthesis_text: str = ""
 
         # Log de eventos del episodio
         self.event_log: list[str] = []
@@ -182,13 +189,16 @@ class CognitiveField:
             else:
                 cluster.stable_cycles = 0
 
-        # Eliminar clusters vacíos y viejos
+        # Eliminar clusters sin señales activas:
+        # - ghosts (0 señales): mueren tras 1 ciclo de gracia
+        # - viejos con señales muertas: persistence > 3
         empty = [
-            cid for cid, c in self.clusters.items()
-            if not any(sid in self.signals for sid in c.signal_ids)
-            and c.persistence > 3
+            cid for cid, cl in self.clusters.items()
+            if not any(sid in self.signals for sid in cl.signal_ids)
+            and (cl.persistence > 1)  # 1 ciclo de gracia para recibir señales nuevas
         ]
         for cid in empty:
+            self.log(f"[CLUSTER-DIE] '{self.clusters[cid].label[:25]}' sin señales")
             del self.clusters[cid]
 
     # ── PASO 2b: Selección competitiva ───────────────────────────────
@@ -236,11 +246,24 @@ class CognitiveField:
         sorted_clusters = sorted(vitality.items(), key=lambda x: x[1], reverse=True)
         max_vitality    = sorted_clusters[0][1]
 
+        # ── DEBUG → archivo (Rich captura stdout y stderr) ──────
+        with open("selection_debug.log", "a") as _dbg:
+            _dbg.write(f"\n[c{self.cycle:02d}] clusters:\n")
+            for cid, v in sorted(vitality.items(), key=lambda x: x[1], reverse=True):
+                cl = self.clusters[cid]
+                _dbg.write(f"  {cl.label[:28]:<28} v={v:.3f} C={cl.contradiction:.2f} R={cl.resonance:.2f}\n")
+            _dbg.write(f"  max_v={max_vitality:.3f}  decay_umbral={max_vitality*0.30:.3f}\n")
+            for t in self.tensions:
+                _dbg.write(f"  T: {t.description[:40]}  i={t.intensity:.3f} cy={t.cycles_active}\n")
+        # ── FIN DEBUG ─────────────────────────────────────────────
+
         # ── A. Absorción competitiva ──────────────────────────────
         # Para cada tensión estructural persistente: el más vital
         # absorbe 1 señal débil del más débil
         for tension in self.tensions:
-            if tension.intensity < 0.35 or tension.cycles_active < 4:
+            if tension.intensity < 0.25 or tension.cycles_active < 2:
+                with open("selection_debug.log", "a") as _dbg:
+                    _dbg.write(f"  [A-skip] {tension.description[:35]} i={tension.intensity:.3f} cy={tension.cycles_active}\n")
                 continue
             va = vitality.get(tension.cluster_a, 0)
             vb = vitality.get(tension.cluster_b, 0)
@@ -252,21 +275,22 @@ class CognitiveField:
             weak      = self.clusters.get(weak_id)
             if not strong or not weak:
                 continue
-            # Encontrar señal más débil del cluster débil
+            # Absorber la señal menos intensa del cluster débil
+            # sin umbral fijo — si la vitalidad lo justifica, el ganador se lleva algo
             weak_sigs = sorted(
                 [self.signals[sid] for sid in weak.signal_ids if sid in self.signals],
                 key=lambda s: s.intensity
             )
             if weak_sigs:
                 migrant = weak_sigs[0]
-                if migrant.intensity < 0.30:   # solo señales débiles migran
-                    weak.signal_ids.remove(migrant.id)
-                    strong.signal_ids.append(migrant.id)
-                    migrant.cluster_id = strong_id
-                    self.log(
-                        f"[ABSORB] '{weak.label[:20]}' → '{strong.label[:20]}' "
-                        f"(Δv={abs(va-vb):.2f})"
-                    )
+                weak.signal_ids.remove(migrant.id)
+                strong.signal_ids.append(migrant.id)
+                migrant.cluster_id = strong_id
+                self._last_absorb_cycle = self.cycle
+                self.log(
+                    f"[ABSORB] '{weak.label[:20]}' → '{strong.label[:20]}' "
+                    f"i={migrant.intensity:.2f} Δv={abs(va-vb):.2f}"
+                )
 
         # ── B. Costo de fragmentación ─────────────────────────────
         # Cada cluster por encima de 6 tiene costo extra de energía
@@ -287,7 +311,7 @@ class CognitiveField:
                     # Reducir intensidad de sus señales más débiles
                     weak_sigs = [
                         self.signals[sid] for sid in cluster.signal_ids
-                        if sid in self.signals and self.signals[sid].intensity < 0.25
+                        if sid in self.signals and self.signals[sid].intensity < 0.50
                     ]
                     for sig in weak_sigs[:2]:
                         sig.intensity *= 0.80
@@ -296,6 +320,9 @@ class CognitiveField:
                             f"[DECAY] '{cluster.label[:25]}' periférico "
                             f"(v={v:.2f} < {max_vitality*0.30:.2f})"
                         )
+                    else:
+                        with open('selection_debug.log', 'a') as _dbg:
+                            _dbg.write(f"  [DECAY-noop] '{cluster.label[:25]}' v={v:.3f} — sin señales débiles\n")
 
         # ── D. Ventaja por centralidad ────────────────────────────
         # Clusters centrales (vitalidad > 70% del máximo) refuerzan
@@ -329,11 +356,19 @@ class CognitiveField:
         active_cluster_ids = set(self.clusters.keys())
         for tension in self.tensions:
             tension.cycles_active += 1
-            # Si alguno de los dos clusters ya no existe, decae rápido
+            ca = self.clusters.get(tension.cluster_a)
+            cb = self.clusters.get(tension.cluster_b)
             if tension.cluster_a not in active_cluster_ids or tension.cluster_b not in active_cluster_ids:
-                tension.intensity *= 0.5
+                # Cluster muerto: decae rápido
+                tension.intensity *= 0.50
+            elif ca and cb and ca.contradiction >= 0.40 and cb.contradiction >= 0.40:
+                # Tensión productiva entre clusters activos: casi no decae
+                tension.intensity *= 0.98
+            elif ca and cb and (ca.contradiction >= 0.40 or cb.contradiction >= 0.40):
+                # Un polo activo: decaimiento moderado
+                tension.intensity *= 0.95
             else:
-                # Decaimiento suave por ciclo si no crece
+                # Ambos débiles: decaimiento normal
                 tension.intensity *= 0.92
 
         # Detectar nuevas
@@ -450,6 +485,68 @@ class CognitiveField:
                 best_id = cid
         return best_id if best_score >= CLUSTER_MERGE_SIMILARITY else None
 
+
+    # ── Resonancia cruzada ────────────────────────────────────────
+
+    def cross_pollinate(self):
+        """
+        Para cada tensión activa e intensa, la señal más fuerte de cada polo
+        genera una señal de resonancia en el cluster opuesto.
+
+        Esto es lo que produce R > 0: señales con source_cluster_id != cluster_id actual.
+
+        Condiciones:
+        - Tensión intensity >= 0.35 y cycles_active >= 2
+        - Señal origen intensity >= 0.30 (tiene contenido real)
+        - Solo 1 señal por polo por ciclo (no explotar)
+        - La señal de resonancia tiene intensity = origen * 0.40 (eco, no copia)
+        """
+        POLLINATE_TENSION_MIN   = 0.35
+        POLLINATE_TENSION_CYCLE = 2
+        POLLINATE_SIGNAL_MIN    = 0.30
+        POLLINATE_DECAY         = 0.40   # intensidad del eco
+
+        for tension in self.tensions:
+            if tension.intensity < POLLINATE_TENSION_MIN:
+                continue
+            if tension.cycles_active < POLLINATE_TENSION_CYCLE:
+                continue
+
+            ca = self.clusters.get(tension.cluster_a)
+            cb = self.clusters.get(tension.cluster_b)
+            if not ca or not cb:
+                continue
+
+            for src_cluster, dst_cluster in [(ca, cb), (cb, ca)]:
+                # Señal más intensa del cluster origen
+                sigs = [
+                    self.signals[sid] for sid in src_cluster.signal_ids
+                    if sid in self.signals
+                    and self.signals[sid].intensity >= POLLINATE_SIGNAL_MIN
+                ]
+                if not sigs:
+                    continue
+                strongest = max(sigs, key=lambda s: s.intensity)
+
+                # Crear señal de resonancia en cluster destino
+                echo = Signal(
+                    type=SignalType.ASOCIATIVA,
+                    intensity=strongest.intensity * POLLINATE_DECAY,
+                    origin_id=strongest.origin_id,
+                    cluster_id=dst_cluster.id,
+                    source_cluster_id=src_cluster.id,  # ← clave para R
+                    novelty=strongest.novelty * 0.7,
+                    contradiction=strongest.contradiction * 0.5,
+                    payload=strongest.payload,
+                    ttl=3,  # eco corto — no contamina, solo fertiliza
+                )
+                self.signals[echo.id] = echo
+                dst_cluster.signal_ids.append(echo.id)
+                self.log(
+                    f"[ECHO] '{src_cluster.label[:20]}' → '{dst_cluster.label[:20]}' "
+                    f"i={echo.intensity:.2f}"
+                )
+
     def receive_signals(self, new_signals: list[Signal]):
         """Integra las señales emitidas en el tick al campo."""
         for sig in new_signals:
@@ -507,6 +604,234 @@ class CognitiveField:
 
     # ── Paso 13: Condición de cierre ──────────────────────────────
 
+
+    # ── Síntesis semántica intra-episodio ─────────────────────────
+
+    def _cluster_payloads(self, cluster_id: str, max_signals: int = 5) -> str:
+        cluster = self.clusters.get(cluster_id)
+        if not cluster:
+            return ""
+        sigs = sorted(
+            [self.signals[sid] for sid in cluster.signal_ids if sid in self.signals],
+            key=lambda s: s.intensity, reverse=True
+        )[:max_signals]
+        return " | ".join(s.payload for s in sigs if s.payload)
+
+    async def evaluate_semantic_relation(self, tension: Tension) -> Optional[SemanticRelation]:
+        """Clasifica la relación conceptual entre dos clusters via LLM."""
+        from google import genai
+        from config import GEMINI_MODEL
+
+        ca = self.clusters.get(tension.cluster_a)
+        cb = self.clusters.get(tension.cluster_b)
+        if not ca or not cb:
+            return None
+        payload_a = self._cluster_payloads(tension.cluster_a)
+        payload_b = self._cluster_payloads(tension.cluster_b)
+        if not payload_a or not payload_b:
+            return None
+
+        prompt = f"""Dos regiones conceptuales están en tensión dentro de un campo cognitivo.
+
+Región A — "{ca.label}":
+{payload_a}
+
+Región B — "{cb.label}":
+{payload_b}
+
+Identificá la relación conceptual dominante entre estas dos regiones.
+
+Responde SOLO con JSON válido, sin texto extra, sin markdown:
+{{
+  "tipo": "contradicción|tensión dialéctica|complemento|reformulación|independencia conceptual",
+  "descripcion": "frase de max 120 chars que describe la relación conceptual específica"
+}}"""
+
+        try:
+            client = genai.Client()
+            response = await asyncio.to_thread(
+                client.models.generate_content,
+                model=GEMINI_MODEL,
+                contents=prompt,
+            )
+            text = response.text.strip()
+            if "```" in text:
+                text = text.split("```")[1]
+                if text.startswith("json"):
+                    text = text[4:]
+            data = json.loads(text.strip())
+            try:
+                rel_type = RelationType(data["tipo"])
+            except (ValueError, KeyError):
+                rel_type = RelationType.TENSION_DIALETICA
+
+            relation = SemanticRelation(
+                tension_id=tension.id,
+                type=rel_type,
+                description=data.get("descripcion", ""),
+                evaluated_at_cycle=self.cycle,
+            )
+            self.semantic_relations.append(relation)
+            self.log(f"[SEMANTIC] {rel_type.value}: {relation.description[:70]}")
+            with open("selection_debug.log", "a") as _dbg:
+                _dbg.write(f"  [SEMANTIC] cy={self.cycle} {rel_type.value}: {relation.description[:80]}\n")
+            return relation
+
+        except Exception as e:
+            self.log(f"[SEMANTIC-ERR] {e}")
+            return None
+
+    async def generate_partial_synthesis(
+        self, tension: Tension, relation: SemanticRelation
+    ) -> Optional[str]:
+        """Genera síntesis conceptual y la inyecta como SynthesisCluster."""
+        from google import genai
+        from config import GEMINI_MODEL
+
+        ca = self.clusters.get(tension.cluster_a)
+        cb = self.clusters.get(tension.cluster_b)
+        if not ca or not cb:
+            return None
+        payload_a = self._cluster_payloads(tension.cluster_a)
+        payload_b = self._cluster_payloads(tension.cluster_b)
+
+        prompt = f"""Un campo cognitivo detectó la siguiente relación conceptual:
+
+Tipo: {relation.type.value}
+Descripción: {relation.description}
+
+Región A — "{ca.label}":
+{payload_a}
+
+Región B — "{cb.label}":
+{payload_b}
+
+Generá una síntesis conceptual que integre o explique esta relación.
+Debe ser una afirmación nueva, no repetición de A o B.
+Debe capturar la tensión esencial y proponer cómo se resuelve, trasciende o persiste.
+
+Responde SOLO con JSON válido, sin texto extra, sin markdown:
+{{
+  "label": "título de la síntesis, max 50 chars",
+  "payload": "la síntesis conceptual, max 120 chars",
+  "contradiction": 0.5,
+  "novelty": 0.7
+}}
+donde contradiction (0-1) = tensión residual, novelty (0-1) = qué tan nueva es."""
+
+        try:
+            client = genai.Client()
+            response = await asyncio.to_thread(
+                client.models.generate_content,
+                model=GEMINI_MODEL,
+                contents=prompt,
+            )
+            text = response.text.strip()
+            if "```" in text:
+                text = text.split("```")[1]
+                if text.startswith("json"):
+                    text = text[4:]
+            data = json.loads(text.strip())
+
+            label   = data.get("label", "Síntesis")[:50]
+            payload = data.get("payload", "")[:120]
+            c_val   = float(data.get("contradiction", 0.5))
+            n_val   = float(data.get("novelty", 0.7))
+
+            # Novedad vs síntesis anterior (léxica simple)
+            novelty_vs_prev = 1.0
+            if self._last_synthesis_text:
+                common = len(
+                    set(payload.lower().split()) &
+                    set(self._last_synthesis_text.lower().split())
+                )
+                novelty_vs_prev = 1.0 - (common / max(len(payload.split()), 1))
+
+            # Señal semilla de alta intensidad
+            seed = Signal(
+                type=SignalType.CONSOLIDANTE,
+                intensity=0.85,
+                origin_id="synthesis",
+                contradiction=c_val,
+                novelty=n_val,
+                ttl=12,
+                payload=payload,
+            )
+            self.signals[seed.id] = seed
+
+            # SynthesisCluster
+            synth = SynthesisCluster(
+                label=f"[S] {label}",
+                signal_ids=[seed.id],
+                contradiction=c_val,
+                novelty=n_val,
+                born_at_cycle=self.cycle,
+                source_tension_id=tension.id,
+                relation_type=relation.type.value,
+                synthesis_cycle=self.cycle,
+            )
+            seed.cluster_id = synth.id
+            self.clusters[synth.id] = synth
+            self.synthesis_clusters.append(synth.id)
+            self._last_synthesis_cycle = self.cycle
+            self._last_synthesis_text  = payload
+
+            for sr in self.semantic_relations:
+                if sr.tension_id == tension.id:
+                    sr.novelty_vs_prev = novelty_vs_prev
+
+            self.log(
+                f"[SYNTH] '{label}' | {relation.type.value} "
+                f"| nov_prev={novelty_vs_prev:.2f} C={c_val:.2f}"
+            )
+            with open("selection_debug.log", "a") as _dbg:
+                _dbg.write(
+                    f"  [SYNTH] cy={self.cycle} '{label}' | {relation.type.value}"
+                    f" | nov_prev={novelty_vs_prev:.2f} C={c_val:.2f}\n"
+                    f"    payload: {payload[:100]}\n"
+                )
+            return synth.id
+
+        except Exception as e:
+            self.log(f"[SYNTH-ERR] {e}")
+            return None
+
+    async def run_semantic_synthesis(self):
+        """
+        Paso 3b del tick: evalúa tensiones maduras y genera síntesis parciales.
+        Corre cada SYNTHESIS_INTERVAL ciclos para controlar costo LLM.
+        """
+        SYNTHESIS_INTERVAL    = 5
+        SYNTHESIS_MIN_CYCLE   = 8
+        TENSION_MIN_INTENSITY = 0.35
+        TENSION_MIN_CYCLES    = 3
+        VITALITY_MIN          = 0.25
+
+        if self.cycle < SYNTHESIS_MIN_CYCLE:
+            return
+        if (self.cycle - self._last_synthesis_cycle) < SYNTHESIS_INTERVAL:
+            return
+
+        vit = {}
+        for cid, cl in self.clusters.items():
+            i = cl.total_intensity(self.signals)
+            vit[cid] = 0.35 * cl.contradiction + 0.25 * cl.resonance + 0.20 * min(1.0, i / 3.0)
+
+        candidates = [
+            t for t in self.tensions
+            if t.intensity >= TENSION_MIN_INTENSITY
+            and t.cycles_active >= TENSION_MIN_CYCLES
+            and vit.get(t.cluster_a, 0) >= VITALITY_MIN
+            and vit.get(t.cluster_b, 0) >= VITALITY_MIN
+        ]
+        if not candidates:
+            return
+
+        target = max(candidates, key=lambda t: t.intensity * (1 + t.cycles_active * 0.1))
+        relation = await self.evaluate_semantic_relation(target)
+        if relation:
+            await self.generate_partial_synthesis(target, relation)
+
     def should_close(self) -> tuple[bool, str]:
         """
         Retorna (cerrar, motivo).
@@ -553,6 +878,9 @@ class CognitiveField:
             self._last_densify_cycle > 0 and  # hubo al menos una densificación
             (self.cycle - self._last_densify_cycle) >= CLOSE_NO_DENSIFY_CYCLES
         )
+        # Si hubo absorción en los últimos 4 ciclos, el campo aún está seleccionando
+        selection_active = (self._last_absorb_cycle > 0 and
+                            (self.cycle - self._last_absorb_cycle) <= 4)
         low_novelty = novelty_avg < CLOSE_NOVELTY_THRESHOLD
 
         # 4ta condición: solo tensiones ESTRUCTURALES activas cuentan
@@ -562,6 +890,10 @@ class CognitiveField:
             self.cycle >= 12 and
             structural_count <= 2
         )
+
+        if selection_active:
+            self._soft_close_streak = 0
+            return False, ""  # campo aún seleccionando
 
         soft_count = sum([low_novelty, all_stable, no_recent_densify, tensions_resolving])
         if soft_count >= CLOSE_SOFT_MIN_CONDITIONS:
@@ -602,10 +934,17 @@ class CognitiveField:
         return sorted(sigs, key=lambda s: s.intensity, reverse=True)[:k]
 
     def global_novelty(self) -> float:
-        """Novedad promedio del campo en este ciclo."""
-        if not self.signals:
+        """Novedad promedio del campo en este ciclo.
+        Excluye ecos de cross_pollinate (ttl=3, source != cluster)
+        para que la fertilización cruzada no distorsione el cierre."""
+        real_signals = [
+            s for s in self.signals.values()
+            if not (s.ttl == 3 and s.source_cluster_id is not None
+                    and s.source_cluster_id != s.cluster_id)
+        ]
+        if not real_signals:
             return 0.0
-        return sum(s.novelty for s in self.signals.values()) / len(self.signals)
+        return sum(s.novelty for s in real_signals) / len(real_signals)
 
     def update_novelty_history(self):
         self._novelty_history.append(self.global_novelty())
