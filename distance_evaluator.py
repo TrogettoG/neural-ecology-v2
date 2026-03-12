@@ -379,8 +379,8 @@ def run_batch(verbose: bool = True) -> list[EvaluationResult]:
         print(f"  {r.run_id:>4}  {r.score:>6.2f}  {r.category:>14}  {r.trajectory:>14}  {pivot_str:>6}")
     print("="*60)
 
-    # Guardar resultados
-    output_path = "/mnt/user-data/outputs/distance_evaluations.jsonl"
+    # Guardar resultados junto al script
+    output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "distance_evaluations.jsonl")
     with open(output_path, "w", encoding="utf-8") as f:
         for r in results:
             f.write(json.dumps(r.to_dict(), ensure_ascii=False) + "\n")
@@ -424,8 +424,8 @@ def run_inline():
     result = evaluate(run)
     result.display()
 
-    # Guardar
-    output_path = f"/mnt/user-data/outputs/eval_run_{run_id}.json"
+    # Guardar junto al script
+    output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), f"eval_run_{run_id}.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(result.to_dict(), f, ensure_ascii=False, indent=2)
     print(f"Guardado en: {output_path}")
