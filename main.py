@@ -36,7 +36,7 @@ PERTURBATIONS = [
     "¿En qué se diferencia la inteligencia distribuida de la inteligencia individual?",
 ]
 
-PERTURBATION_INDEX = 1   # ← cambiar para rotar
+PERTURBATION_INDEX = 4   # ← cambiar para rotar
 
 PERTURBATION = PERTURBATIONS[PERTURBATION_INDEX]
 
