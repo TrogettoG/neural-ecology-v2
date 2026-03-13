@@ -113,12 +113,22 @@ ELABORACIÓN (score 0.26–0.55):
 - El cluster final sigue en el mismo dominio que la perturbación, pero lo complejizó,
   estructuró, o profundizó significativamente.
 - El tema sigue siendo el mismo, pero la comprensión es más rica.
+- IMPORTANTE: el uso de metáforas, imágenes o reformulaciones dentro del mismo dominio
+  NO constituye migración. "Nodos y redes" como metáfora de identidad/colectivo sigue
+  siendo elaboración, no migración.
 - Ejemplo: perturbación sobre "olvido" → cluster final sobre "selectividad como arquitectura activa de la memoria"
+- Ejemplo: perturbación sobre "identidad/colectivo" → cluster final sobre "yo como nodo en una red de interconexiones"
 
 MIGRACIÓN (score 0.56–1.00):
-- El cluster final pertenece a un dominio conceptual diferente al de la perturbación.
-- El campo no resolvió ni profundizó la pregunta original — se alejó de ella y exploró territorio nuevo.
-- Ejemplo: perturbación sobre "identidad/colectivo" → cluster final sobre "unicidad: ¿innata o construida?"
+- El cluster final pertenece a un dominio conceptual GENUINAMENTE DIFERENTE al de la perturbación.
+- Test estricto: un lector que solo lee la perturbación y el cluster final NO reconocería la conexión temática.
+- El campo abandonó la pregunta original — no la resolvió, no la profundizó, la dejó atrás.
+- No basta con que el ángulo sea diferente o que el vocabulario haya cambiado.
+  El DOMINIO tiene que ser diferente.
+- Ejemplo válido: perturbación sobre "identidad/colectivo" → cluster final sobre "unicidad: ¿innata o construida?"
+  (el campo dejó la relación yo-colectivo y exploró la ontología de la singularidad)
+- Contraejemplo: perturbación sobre "identidad/colectivo" → cluster final sobre "identidad fluida vs. anclajes colectivos"
+  (sigue siendo el mismo dominio, es elaboración aunque el ángulo cambió)
 
 TRAYECTORIAS:
 - "estable": el campo se mantuvo en el mismo dominio durante toda la corrida
@@ -126,8 +136,32 @@ TRAYECTORIAS:
 - "deriva": el campo se desplazó gradualmente hacia un dominio adyacente
 - "salto": el campo cambió de dominio de forma abrupta en algún ciclo
 
-PIVOT_CYCLE: ciclo donde el campo cruzó el umbral de dominio (solo para migración/deriva).
-Inferirlo de la cadena de síntesis. Null para paráfrasis y profundización estable.
+PIVOT_CYCLE: ciclo donde el campo cruzó el umbral de dominio (solo para migración real con deriva o salto).
+Inferirlo de la cadena de síntesis. Null para paráfrasis, profundización y elaboración.
+REGLA ESTRICTA: No inventes pivot_cycle. Si no hay un desplazamiento de dominio claro y verificable
+en la cadena de síntesis, el valor debe ser null. Nunca uses -1 ni valores aproximados.
+Un cambio de encuadre, metáfora o estructura interna dentro del mismo dominio conceptual
+es elaboración, no migración. Solo es migración cuando el dominio central cambia.
+
+CÓMO USAR LA CADENA DE SÍNTESIS:
+El cluster final determina el score (la distancia total recorrida).
+La cadena de síntesis ajusta la clasificación entre paráfrasis y elaboración.
+
+Regla correctora:
+- Si el cluster final está cerca de la perturbación original PERO la cadena muestra
+  refinamiento progresivo, resolución de tensiones, o capas conceptuales nuevas
+  dentro del mismo dominio → preferir ELABORACIÓN sobre paráfrasis.
+- Si tanto el cluster final como la cadena repiten la idea original sin desarrollo
+  conceptual visible → PARÁFRASIS.
+- Si la cadena desplaza el centro conceptual hacia otro dominio → MIGRACIÓN.
+
+Mini-guía de clasificación:
+  paráfrasis  : misma idea, mismas relaciones, mínimo trabajo conceptual en la cadena.
+  elaboración : mismo dominio, pero la cadena muestra refinamiento, nuevas capas,
+                o mejor organización conceptual.
+  migración   : la cadena desplaza el campo hacia otro dominio o nuevo centro conceptual.
+
+Fórmula: el destino decide el score. La trayectoria decide la categoría fina.
 
 Responde ÚNICAMENTE con JSON válido, sin texto adicional, sin markdown, sin explicaciones fuera del JSON.
 """
@@ -265,6 +299,10 @@ def evaluate(run: RunInput, api_key: Optional[str] = None) -> EvaluationResult:
 # ---------------------------------------------------------------------------
 
 KNOWN_RUNS: list[RunInput] = [
+    # -----------------------------------------------------------------------
+    # SET 1 — corridas de calibración inicial (con payload y cadena completa)
+    # -----------------------------------------------------------------------
+
     # C52 — migración confirmada (perturbación 1, MAX_CYCLES=45)
     RunInput(
         run_id=52,
@@ -283,12 +321,12 @@ KNOWN_RUNS: list[RunInput] = [
             {"cycle": 40, "label": "[S] Unicidad: Origen y Expresión"},
             {"cycle": 45, "label": "[S] Unicidad: Naturaleza vs. Construcción"},
         ],
-        snapshot_c15="[S] La uniformidad anula la singularidad (dominante)",
+        snapshot_c15="La uniformidad anula la singularidad (dominante)",
         snapshot_c25="[S] Agencia Única vs. Disolución Colectiva (dominante)",
         snapshot_c30="[S] Agencia Única vs. Disolución Colectiva (dominante)",
     ),
 
-    # C53 — elaboración/paráfrasis (perturbación 2, 1 síntesis)
+    # C53 — paráfrasis (perturbación 2, 2 síntesis)
     RunInput(
         run_id=53,
         perturbacion="¿Qué se pierde y qué se gana cuando un sistema olvida?",
@@ -306,7 +344,7 @@ KNOWN_RUNS: list[RunInput] = [
         snapshot_c30="[S] El olvido, un filtro activo (dominante)",
     ),
 
-    # C55 — elaboración (perturbación 2, 5 síntesis)
+    # C55 — elaboración (perturbación 2, 4 síntesis)
     RunInput(
         run_id=55,
         perturbacion="¿Qué se pierde y qué se gana cuando un sistema olvida?",
@@ -321,12 +359,12 @@ KNOWN_RUNS: list[RunInput] = [
             {"cycle": 25, "label": "[S] Olvido activo: Criba de la memoria"},
             {"cycle": 30, "label": "[S] Olvido: Agente de la Memoria"},
         ],
-        snapshot_c15="[S] El olvido como filtro, la memoria como construcción (dominante)",
+        snapshot_c15="El olvido como filtro, la memoria como construcción (dominante)",
         snapshot_c25="[S] Selectividad vs. Arquitectura Activa (dominante)",
         snapshot_c30="El olvido como filtro, la memoria como construcción (dominante)",
     ),
 
-    # C57 — paráfrasis (perturbación 4, 4 síntesis convergentes)
+    # C57 — elaboración (perturbación 4, 4 síntesis)
     RunInput(
         run_id=57,
         perturbacion="¿Puede emerger propósito en un sistema sin intención original?",
@@ -344,6 +382,110 @@ KNOWN_RUNS: list[RunInput] = [
         snapshot_c15="La ausencia de intención inicial (dominante)",
         snapshot_c25="[S] Creación: Potencial Libre (dominante)",
         snapshot_c30="[S] Intención vs. Potencial Libre (dominante)",
+    ),
+
+    # -----------------------------------------------------------------------
+    # SET 2 — corridas nuevas (datos desde CSV, sin payload ni cadena completa)
+    # -----------------------------------------------------------------------
+
+    # C58 — perturbación 4, cierre emergente en c12
+    RunInput(
+        run_id=58,
+        perturbacion="¿Puede emerger propósito en un sistema sin intención original?",
+        cluster_final_label="La emergencia de propósito sin intención",
+        cluster_final_payload="",
+        synthesis_chain=[],  # 3 síntesis, cadena no disponible
+        snapshot_c15=None,
+        snapshot_c25=None,
+        snapshot_c30=None,
+    ),
+
+    # C59 — perturbación 4, 30 ciclos, 3 síntesis
+    RunInput(
+        run_id=59,
+        perturbacion="¿Puede emerger propósito en un sistema sin intención original?",
+        cluster_final_label="profundizar la disonancia res vs resulta",
+        cluster_final_payload="",
+        synthesis_chain=[
+            {"cycle": -1, "label": "[S] Causalidad Dinámica"},  # ciclo exacto no disponible
+        ],
+        snapshot_c15=None,
+        snapshot_c25=None,
+        snapshot_c30="profundizar la disonancia vs [S] Causalidad Dinámica (tensión dominante)",
+    ),
+
+    # C60 — perturbación 2, cierre emergente en c12
+    RunInput(
+        run_id=60,
+        perturbacion="¿Qué se pierde y qué se gana cuando un sistema olvida?",
+        cluster_final_label="La pérdida de información vs. la optimiz",
+        cluster_final_payload="",
+        synthesis_chain=[],  # 3 síntesis, cadena no disponible
+        snapshot_c15=None,
+        snapshot_c25=None,
+        snapshot_c30=None,
+    ),
+
+    # C61 — perturbación 2, 20 ciclos, 1 síntesis, R=0.58 (récord)
+    RunInput(
+        run_id=61,
+        perturbacion="¿Qué se pierde y qué se gana cuando un sistema olvida?",
+        cluster_final_label="¿Qué se pierde y qué se gana cuando un sistema olvida?",
+        cluster_final_payload="",
+        synthesis_chain=[],  # 1 síntesis, cadena no disponible
+        snapshot_c15=None,
+        snapshot_c25=None,
+        snapshot_c30="¿Qué se pierde y qué se g vs El olvido como poda activa (tensión dominante)",
+    ),
+
+    # C62 — perturbación 2, cierre emergente en c12
+    RunInput(
+        run_id=62,
+        perturbacion="¿Qué se pierde y qué se gana cuando un sistema olvida?",
+        cluster_final_label="La paradoja entre la pérdida y la gananc",
+        cluster_final_payload="",
+        synthesis_chain=[],  # 3 síntesis, cadena no disponible
+        snapshot_c15=None,
+        snapshot_c25=None,
+        snapshot_c30=None,
+    ),
+
+    # C63 — perturbación 1, 30 ciclos, 15 síntesis
+    RunInput(
+        run_id=63,
+        perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+        cluster_final_label="Yo como nodo, interconexión como red.",
+        cluster_final_payload="",
+        synthesis_chain=[],  # 15 síntesis, cadena no disponible
+        snapshot_c15=None,
+        snapshot_c25=None,
+        snapshot_c30="La red amplifica la esencia vs Yo como nodo (tensión dominante)",
+    ),
+
+    # C64 — perturbación 1, 30 ciclos, 1 síntesis
+    RunInput(
+        run_id=64,
+        perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+        cluster_final_label="Identidad fluida vs. anclajes colectivos",
+        cluster_final_payload="",
+        synthesis_chain=[
+            {"cycle": -1, "label": "[S] Yo Colectivo: Integración"},
+        ],
+        snapshot_c15="Disolución del yo: ¿conciencia? (dominante)",
+        snapshot_c25=None,
+        snapshot_c30=None,
+    ),
+
+    # C65 — perturbación 1, 30 ciclos, 15 síntesis, R=0.50
+    RunInput(
+        run_id=65,
+        perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+        cluster_final_label="Yo singular -> nutrición colectiva via e",
+        cluster_final_payload="",
+        synthesis_chain=[],  # 15 síntesis, cadena no disponible
+        snapshot_c15="[S] Tensión Yo-Colectivo (dominante)",
+        snapshot_c25=None,
+        snapshot_c30="[S] Tensión Yo-Colectivo vs Yo singular -> nutrición colectiva (tensión dominante)",
     ),
 ]
 
