@@ -32,7 +32,7 @@ Paraphrase       9      43%
 
 **Semantic migration** — the field stabilizing around a domain the original question did not ask about — appeared in 2 runs (C52, C74). It is rare, but reproducible and measurable.
 
-→ Full write-up: [*When an AI System Leaves the Question Behind*](#) *(Medium — link coming soon)*
+→ Full write-up: [**When an AI System Leaves the Question Behind**](https://medium.com/@trogettog/when-an-ai-system-leaves-the-question-behind-5b2492c03ee0) *(Medium)*
 
 ---
 
