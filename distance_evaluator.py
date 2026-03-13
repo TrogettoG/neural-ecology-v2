@@ -487,6 +487,120 @@ KNOWN_RUNS: list[RunInput] = [
         snapshot_c25=None,
         snapshot_c30="[S] Tensión Yo-Colectivo vs Yo singular -> nutrición colectiva (tensión dominante)",
     ),
+    # -----------------------------------------------------------------------
+    # SET 3 — perturbaciones 0, 3, 5
+    # -----------------------------------------------------------------------
+
+    # C66 — perturbación 0, cierre c12, 3 síntesis
+    RunInput(
+        run_id=66,
+        perturbacion="¿Puede emerger consciencia en una red de agentes mínimos?",
+        cluster_final_label="Explorando la emergencia de consciencia",
+        cluster_final_payload="",
+        synthesis_chain=[],
+        snapshot_c15="La emergencia de consciencia (dominante)",
+        snapshot_c25="Explorando la emergencia (dominante)",
+        snapshot_c30="La emergencia de consciencia (dominante)",
+    ),
+
+    # C67 — perturbación 0, 27 ciclos, 1 síntesis, R=0.40
+    RunInput(
+        run_id=67,
+        perturbacion="¿Puede emerger consciencia en una red de agentes mínimos?",
+        cluster_final_label="La consciencia surge de la complejidad i",
+        cluster_final_payload="",
+        synthesis_chain=[],
+        snapshot_c15="La emergencia de consciencia (dominante)",
+        snapshot_c25=None,
+        snapshot_c30=None,
+    ),
+
+    # C68 — perturbación 0, cierre c12, 3 síntesis, R=0.17 muy alto
+    RunInput(
+        run_id=68,
+        perturbacion="¿Puede emerger consciencia en una red de agentes mínimos?",
+        cluster_final_label="Explorando la emergencia de consciencia",
+        cluster_final_payload="",
+        synthesis_chain=[],
+        snapshot_c15="Explorando la emergencia (dominante)",
+        snapshot_c25="Explorando la emergencia (dominante)",
+        snapshot_c30="Explorando la emergencia (dominante)",
+    ),
+
+    # C69 — perturbación 3, 30 ciclos, 15 síntesis, R=0.0 — candidato a migración
+    RunInput(
+        run_id=69,
+        perturbacion="¿Cuándo la cooperación se convierte en conflicto y viceversa?",
+        cluster_final_label="[S] Tensión Escasez: Ingenio vs. Parálisis",
+        cluster_final_payload="",
+        synthesis_chain=[],
+        snapshot_c15="Escasez => ingenio, optimización (dominante)",
+        snapshot_c25="Escasez => ingenio, optimización (dominante)",
+        snapshot_c30="[S] Escasez: Dilema de la creatividad (tensión dominante)",
+    ),
+
+    # C70 — perturbación 3, 30 ciclos, 7 síntesis, R=0.0
+    RunInput(
+        run_id=70,
+        perturbacion="¿Cuándo la cooperación se convierte en conflicto y viceversa?",
+        cluster_final_label="[S] Coopencia: Tensión y Sinergia",
+        cluster_final_payload="",
+        synthesis_chain=[],
+        snapshot_c15="La línea es fina entre cooperación y conflicto (dominante)",
+        snapshot_c25="[S] Coopencia: Tensión y Sinergia (dominante)",
+        snapshot_c30="[S] Coopencia: Tensión y Sinergia vs Competencia como motor (tensión dominante)",
+    ),
+
+    # C71 — perturbación 3, 25 ciclos, 9 síntesis, R=0.50
+    RunInput(
+        run_id=71,
+        perturbacion="¿Cuándo la cooperación se convierte en conflicto y viceversa?",
+        cluster_final_label="El umbral crítico de recursos y poder de",
+        cluster_final_payload="",
+        synthesis_chain=[],
+        snapshot_c15="El umbral crítico de recursos (dominante)",
+        snapshot_c25="[S] Ambición sobre la escasez (dominante)",
+        snapshot_c30="Escasez -> Supervivencia (tensión dominante)",
+    ),
+
+    # C72 — perturbación 5, cierre c12, 3 síntesis
+    RunInput(
+        run_id=72,
+        perturbacion="¿En qué se diferencia la inteligencia distribuida de la inteligencia individual?",
+        cluster_final_label="Distribuida implica múltiples nodos, no",
+        cluster_final_payload="",
+        synthesis_chain=[],
+        snapshot_c15="Distribuida implica múltiples nodos (dominante)",
+        snapshot_c25="Inteligencia distribuida (dominante)",
+        snapshot_c30="Inteligencia distribuida (dominante)",
+    ),
+
+    # C73 — perturbación 5, 29 ciclos, 3 síntesis, R=0.20 — candidato a migración leve
+    RunInput(
+        run_id=73,
+        perturbacion="¿En qué se diferencia la inteligencia distribuida de la inteligencia individual?",
+        cluster_final_label="[S] Emergencia vs. Diseño",
+        cluster_final_payload="",
+        synthesis_chain=[
+            {"cycle": -1, "label": "[S] Diseño vs. Emergencia"},
+            {"cycle": -1, "label": "[S] Emergencia vs. Diseño"},
+        ],
+        snapshot_c15="La multifacética IA se diferencia (dominante)",
+        snapshot_c25="[S] Diseño vs. Emergencia (dominante)",
+        snapshot_c30="[S] Emergencia vs. Diseño (dominante)",
+    ),
+
+    # C74 — perturbación 5, 30 ciclos, 15 síntesis, R=0.18 — candidato a migración
+    RunInput(
+        run_id=74,
+        perturbacion="¿En qué se diferencia la inteligencia distribuida de la inteligencia individual?",
+        cluster_final_label="Orden y Caos: La dialéctica que genera p",
+        cluster_final_payload="",
+        synthesis_chain=[],
+        snapshot_c15="[S] Inteligencia emergente (dominante)",
+        snapshot_c25="[S] Orden y Caos Inteligente (dominante)",
+        snapshot_c30="Orden y Caos: La dialéctica (dominante)",
+    ),
 ]
 
 
