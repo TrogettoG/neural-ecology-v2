@@ -29,6 +29,8 @@ import argparse
 from dataclasses import dataclass, field, asdict
 from typing import Optional
 from google import genai
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # ---------------------------------------------------------------------------
@@ -601,8 +603,131 @@ KNOWN_RUNS: list[RunInput] = [
         snapshot_c25="[S] Orden y Caos Inteligente (dominante)",
         snapshot_c30="Orden y Caos: La dialéctica (dominante)",
     ),
-]
+    
+    RunInput(
+    run_id=81,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="La germinación es devenir, no ser estáti",
+    cluster_final_payload="La germinación es devenir, no ser estáti",
+    synthesis_chain=[
+        {"cycle": 32, "label": "[S] Fluidez Consciente vs. Esencia Adapt"},
+        {"cycle": 38, "label": "[S] Fluidez: Proceso y Consecuencia"},
+        {"cycle": 44, "label": "[S] Esencia fluida en devenir adaptativo"},
+    ]),
 
+    RunInput(
+    run_id=75,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="La masa como catalizador de la unicidad",
+    cluster_final_payload="La masa como catalizador de la unicidad",
+    synthesis_chain=[
+        {"cycle": 13, "label": "[S] Sinergia Individual-Colectiva"},
+    ],
+),
+RunInput(
+    run_id=76,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="[S] Renacimiento Colectivo y la Identidad",
+    cluster_final_payload="[S] Renacimiento Colectivo y la Identidad",
+    synthesis_chain=[
+        {"cycle": 13, "label": "[S] Renacimiento Colectivo y la Identidad"},
+        {"cycle": 19, "label": "[S] Evolución Identitaria vs. Colectivo Ilusorio"},
+        {"cycle": 25, "label": "[S] Persistencia Identitaria en el Flujo Colectivo"},
+    ],
+),
+RunInput(
+    run_id=77,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="[S] Identidad en la Tensión Colectiva",
+    cluster_final_payload="[S] Identidad en la Tensión Colectiva",
+    synthesis_chain=[
+        {"cycle": 8,  "label": "[S] Identidad en la Tensión Colectiva"},
+        {"cycle": 13, "label": "[S] Identidad: Anulación vs. Expansión"},
+    ],
+),
+RunInput(
+    run_id=78,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="La pregunta misma niega la identidad individual",
+    cluster_final_payload="La pregunta misma niega la identidad individual",
+    synthesis_chain=[],
+),
+RunInput(
+    run_id=79,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="Exploro la disolución del yo en el nosotros",
+    cluster_final_payload="Exploro la disolución del yo en el nosotros",
+    synthesis_chain=[
+        {"cycle": 16, "label": "[S] Yo: Integración Reconfiguradora"},
+    ],
+),
+RunInput(
+    run_id=80,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="La primacía del colectivo disuelve la autonomía",
+    cluster_final_payload="La primacía del colectivo disuelve la autonomía",
+    synthesis_chain=[],
+),
+RunInput(
+    run_id=82,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="[S] Dialéctica Yo-Colectivo",
+    cluster_final_payload="[S] Dialéctica Yo-Colectivo",
+    synthesis_chain=[
+        {"cycle": 8,  "label": "[S] Autonomía vs. Cohesión Social"},
+        {"cycle": 18, "label": "[S] Individuo y colectivo en simetría"},
+        {"cycle": 23, "label": "[S] Dialéctica Yo-Colectivo"},
+    ],
+),
+RunInput(
+    run_id=83,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="La norma colectiva enriquece al yo sin disolverlo",
+    cluster_final_payload="La norma colectiva enriquece al yo sin disolverlo",
+    synthesis_chain=[
+        {"cycle": 37, "label": "[S] Sinergia Autorealizada vs. Opresión"},
+    ],
+),
+RunInput(
+    run_id=84,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="La colectividad es el crisol donde la unicidad se forja",
+    cluster_final_payload="La colectividad es el crisol donde la unicidad se forja",
+    synthesis_chain=[
+        {"cycle": 8, "label": "[S] Cohesión y Autonomía"},
+    ],
+),
+RunInput(
+    run_id=85,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="El 'yo' diluido en el 'nosotros' colectivo",
+    cluster_final_payload="El 'yo' diluido en el 'nosotros' colectivo",
+    synthesis_chain=[],
+
+),
+RunInput(
+    run_id=86,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="[S] Yo Integrado: Evolución y Colectividad",
+    cluster_final_payload="[S] Yo Integrado: Evolución y Colectividad",
+    synthesis_chain=[
+        {"cycle": 23, "label": "[S] Yo Colectivo: Potencia y Dilución"},
+        {"cycle": 28, "label": "[S] Yo Integrado: Evolución y Colectividad"},
+        {"cycle": 35, "label": "[S] Yo Colectivo: Autonomía Integrada"},
+    ],
+),
+RunInput(
+    run_id=87,
+    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
+    cluster_final_label="[S] Yo expansivo en la colectividad",
+    cluster_final_payload="[S] Yo expansivo en la colectividad",
+    synthesis_chain=[
+        {"cycle": 18, "label": "[S] Yo expansivo en la colectividad"},
+        {"cycle": 23, "label": "[S] Yo expandido: Interconexión sin anulación"},
+    ],
+),
+
+]
 
 # ---------------------------------------------------------------------------
 # CLI

@@ -95,7 +95,7 @@ CLOSE_NOVELTY_CYCLES      = 3
 CLOSE_NO_DENSIFY_CYCLES   = 3
 CLOSE_SOFT_MIN_CONDITIONS = 2    # de 3 condiciones suaves
 CLOSE_SOFT_MIN_CYCLES     = 1    # ciclos consecutivos
-MAX_CYCLES                = 30
+MAX_CYCLES                = 45
 
 # ── Plasticidad ───────────────────────────────────────────────────
 PLASTICITY_PROB        = 0.10

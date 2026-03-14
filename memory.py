@@ -217,6 +217,19 @@ class Memory:
             )
             self.consolidated.add(trace)
 
+    async def clear_redis(self):
+        """Limpia el namespace neurona_v2 en Redis y resetea estado local.
+        Llamar antes de cada run para garantizar episodios independientes.
+        """
+        if self.consolidated._redis:
+            try:
+                await self.consolidated._redis.delete("neurona_v2:consolidated")
+            except Exception:
+                pass
+        self.recent.clear()
+        self.consolidated._patterns = []
+        self.consolidated._loaded = False
+
     async def close_episode(self, clusters: dict, signals: dict, cycle: int):
         """Ejecuta transferencia, decaimiento y persistencia al cerrar."""
         self.transfer_to_consolidated(clusters, signals, cycle)
