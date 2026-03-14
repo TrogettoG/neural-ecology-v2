@@ -168,6 +168,8 @@ def save_run(orchestrator, field, run_id: int, perturbation_idx: int, perturbati
         # — Cadena de síntesis
         "synthesis_count":  len(synthesis_chain),
         "synthesis_chain":  synthesis_chain,
+        # — Early snapshots ciclos 1–5
+        "early_snapshots":  orchestrator.early_snapshots,
         # — Tensiones finales
         "top_tensions":     tension_descs,
     }

@@ -29,6 +29,7 @@ import argparse
 from dataclasses import dataclass, field, asdict
 from typing import Optional
 from google import genai
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -603,131 +604,8 @@ KNOWN_RUNS: list[RunInput] = [
         snapshot_c25="[S] Orden y Caos Inteligente (dominante)",
         snapshot_c30="Orden y Caos: La dialéctica (dominante)",
     ),
-    
-    RunInput(
-    run_id=81,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="La germinación es devenir, no ser estáti",
-    cluster_final_payload="La germinación es devenir, no ser estáti",
-    synthesis_chain=[
-        {"cycle": 32, "label": "[S] Fluidez Consciente vs. Esencia Adapt"},
-        {"cycle": 38, "label": "[S] Fluidez: Proceso y Consecuencia"},
-        {"cycle": 44, "label": "[S] Esencia fluida en devenir adaptativo"},
-    ]),
-
-    RunInput(
-    run_id=75,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="La masa como catalizador de la unicidad",
-    cluster_final_payload="La masa como catalizador de la unicidad",
-    synthesis_chain=[
-        {"cycle": 13, "label": "[S] Sinergia Individual-Colectiva"},
-    ],
-),
-RunInput(
-    run_id=76,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="[S] Renacimiento Colectivo y la Identidad",
-    cluster_final_payload="[S] Renacimiento Colectivo y la Identidad",
-    synthesis_chain=[
-        {"cycle": 13, "label": "[S] Renacimiento Colectivo y la Identidad"},
-        {"cycle": 19, "label": "[S] Evolución Identitaria vs. Colectivo Ilusorio"},
-        {"cycle": 25, "label": "[S] Persistencia Identitaria en el Flujo Colectivo"},
-    ],
-),
-RunInput(
-    run_id=77,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="[S] Identidad en la Tensión Colectiva",
-    cluster_final_payload="[S] Identidad en la Tensión Colectiva",
-    synthesis_chain=[
-        {"cycle": 8,  "label": "[S] Identidad en la Tensión Colectiva"},
-        {"cycle": 13, "label": "[S] Identidad: Anulación vs. Expansión"},
-    ],
-),
-RunInput(
-    run_id=78,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="La pregunta misma niega la identidad individual",
-    cluster_final_payload="La pregunta misma niega la identidad individual",
-    synthesis_chain=[],
-),
-RunInput(
-    run_id=79,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="Exploro la disolución del yo en el nosotros",
-    cluster_final_payload="Exploro la disolución del yo en el nosotros",
-    synthesis_chain=[
-        {"cycle": 16, "label": "[S] Yo: Integración Reconfiguradora"},
-    ],
-),
-RunInput(
-    run_id=80,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="La primacía del colectivo disuelve la autonomía",
-    cluster_final_payload="La primacía del colectivo disuelve la autonomía",
-    synthesis_chain=[],
-),
-RunInput(
-    run_id=82,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="[S] Dialéctica Yo-Colectivo",
-    cluster_final_payload="[S] Dialéctica Yo-Colectivo",
-    synthesis_chain=[
-        {"cycle": 8,  "label": "[S] Autonomía vs. Cohesión Social"},
-        {"cycle": 18, "label": "[S] Individuo y colectivo en simetría"},
-        {"cycle": 23, "label": "[S] Dialéctica Yo-Colectivo"},
-    ],
-),
-RunInput(
-    run_id=83,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="La norma colectiva enriquece al yo sin disolverlo",
-    cluster_final_payload="La norma colectiva enriquece al yo sin disolverlo",
-    synthesis_chain=[
-        {"cycle": 37, "label": "[S] Sinergia Autorealizada vs. Opresión"},
-    ],
-),
-RunInput(
-    run_id=84,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="La colectividad es el crisol donde la unicidad se forja",
-    cluster_final_payload="La colectividad es el crisol donde la unicidad se forja",
-    synthesis_chain=[
-        {"cycle": 8, "label": "[S] Cohesión y Autonomía"},
-    ],
-),
-RunInput(
-    run_id=85,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="El 'yo' diluido en el 'nosotros' colectivo",
-    cluster_final_payload="El 'yo' diluido en el 'nosotros' colectivo",
-    synthesis_chain=[],
-
-),
-RunInput(
-    run_id=86,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="[S] Yo Integrado: Evolución y Colectividad",
-    cluster_final_payload="[S] Yo Integrado: Evolución y Colectividad",
-    synthesis_chain=[
-        {"cycle": 23, "label": "[S] Yo Colectivo: Potencia y Dilución"},
-        {"cycle": 28, "label": "[S] Yo Integrado: Evolución y Colectividad"},
-        {"cycle": 35, "label": "[S] Yo Colectivo: Autonomía Integrada"},
-    ],
-),
-RunInput(
-    run_id=87,
-    perturbacion="¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    cluster_final_label="[S] Yo expansivo en la colectividad",
-    cluster_final_payload="[S] Yo expansivo en la colectividad",
-    synthesis_chain=[
-        {"cycle": 18, "label": "[S] Yo expansivo en la colectividad"},
-        {"cycle": 23, "label": "[S] Yo expandido: Interconexión sin anulación"},
-    ],
-),
-
 ]
+
 
 # ---------------------------------------------------------------------------
 # CLI
@@ -812,17 +690,115 @@ def run_inline():
     print(f"Guardado en: {output_path}")
 
 
+# ---------------------------------------------------------------------------
+# Carga desde JSON
+# ---------------------------------------------------------------------------
+
+def run_input_from_json(json_path: str) -> RunInput:
+    """Construye un RunInput leyendo directamente un run_NNN.json."""
+    with open(json_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    return RunInput(
+        run_id=data["run_id"],
+        perturbacion=data["experiment"]["perturbation"],
+        cluster_final_label=data.get("final_cluster", ""),
+        cluster_final_payload=data.get("final_cluster", ""),
+        synthesis_chain=data.get("synthesis_chain", []),
+    )
+
+
+def run_from_json(json_path: str, quiet: bool = False) -> EvaluationResult:
+    """Evalúa una corrida directamente desde su JSON. Guarda en distance_evaluations.jsonl."""
+    run = run_input_from_json(json_path)
+    print(f"\nEvaluando corrida {run.run_id} desde {json_path}...")
+    result = evaluate(run)
+    if not quiet:
+        result.display()
+
+    # Guardar en jsonl
+    output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "distance_evaluations.jsonl")
+    with open(output_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(result.to_dict(), ensure_ascii=False) + "\n")
+    print(f"  → Guardado en distance_evaluations.jsonl")
+
+    return result
+
+
+def run_auto_batch(runs_dir: str = "runs", quiet: bool = False):
+    """
+    Evalúa todos los JSONs en runs/ que aún no tienen evaluación en
+    distance_evaluations.jsonl. Útil para evaluar runs nuevas de una vez.
+    """
+    runs_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), runs_dir)
+    if not os.path.exists(runs_path):
+        print(f"Error: directorio '{runs_dir}' no encontrado.")
+        sys.exit(1)
+
+    # IDs ya evaluados
+    jsonl_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "distance_evaluations.jsonl")
+    evaluated_ids = set()
+    if os.path.exists(jsonl_path):
+        with open(jsonl_path, "r", encoding="utf-8") as f:
+            for line in f:
+                try:
+                    evaluated_ids.add(json.loads(line.strip())["run_id"])
+                except Exception:
+                    pass
+
+    # JSONs pendientes
+    import glob
+    json_files = sorted(glob.glob(os.path.join(runs_path, "run_*.json")))
+    pending = []
+    for fp in json_files:
+        try:
+            with open(fp) as f:
+                rid = json.load(f)["run_id"]
+            if rid not in evaluated_ids:
+                pending.append((rid, fp))
+        except Exception:
+            pass
+
+    if not pending:
+        print("No hay runs pendientes de evaluación.")
+        return
+
+    print(f"\n{len(pending)} runs pendientes: {[r for r,_ in pending]}")
+    results = []
+    for rid, fp in pending:
+        result = run_from_json(fp, quiet=quiet)
+        results.append(result)
+
+    # Resumen
+    print(f"\n{'─'*60}")
+    print(f"{'ID':<6} {'Score':>6}  {'Categoría':<14} {'Trayectoria':<16} {'Pivot':>5}")
+    print(f"{'─'*60}")
+    for r in sorted(results, key=lambda x: x.run_id):
+        cat_emoji = {"paráfrasis": "🔁", "elaboración": "🔍", "migración": "🌍"}.get(r.category, "?")
+        print(f"{r.run_id:<6} {r.score:>6.2f}  {cat_emoji} {r.category:<12} {r.trajectory:<16} {str(r.pivot_cycle):>5}")
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
 def main():
     parser = argparse.ArgumentParser(
         description="Evaluador de distancia semántica post-corrida — Neural Ecology V2"
     )
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--batch", action="store_true",
-                       help="Evalúa todas las corridas conocidas (C52, C53, C55, C57)")
+                       help="Evalúa todas las corridas conocidas en KNOWN_RUNS")
     group.add_argument("--inline", action="store_true",
                        help="Modo interactivo: ingresás los datos manualmente")
     group.add_argument("--run_id", type=int,
                        help="Evalúa una corrida específica por ID (debe estar en KNOWN_RUNS)")
+    group.add_argument("--from_json", type=str, metavar="PATH",
+                       help="Evalúa una corrida leyendo directamente runs/run_NNN.json")
+    group.add_argument("--auto_batch", action="store_true",
+                       help="Evalúa todos los JSONs en runs/ que aún no tienen evaluación")
+    parser.add_argument("--runs_dir", type=str, default="runs",
+                        help="Directorio de JSONs para --auto_batch (default: runs/)")
     parser.add_argument("--quiet", action="store_true",
                         help="Solo muestra el resumen, sin display detallado")
 
@@ -842,8 +818,13 @@ def main():
         result = evaluate(matching[0])
         result.display()
 
+    elif args.from_json:
+        run_from_json(args.from_json, quiet=args.quiet)
+
+    elif args.auto_batch:
+        run_auto_batch(runs_dir=args.runs_dir, quiet=args.quiet)
+
     else:
-        # Por defecto: batch
         run_batch(verbose=True)
 
 

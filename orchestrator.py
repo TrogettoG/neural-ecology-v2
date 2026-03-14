@@ -41,6 +41,10 @@ class Orchestrator:
         self.final_result: Optional[str] = None
         self.close_reason: Optional[str] = None
 
+        # Snapshots de ciclos tempranos (1–5)
+        self.early_snapshots: list[dict] = []
+        self._early_snapshot_cycles = set(range(1, 6))  # ciclos 1 a 5
+
     # ── Spawn de neuronas ─────────────────────────────────────────
 
     def spawn(
@@ -238,6 +242,36 @@ class Orchestrator:
             f"n_act={stats['active_neurons']} n_dead={stats['dead_neurons']} "
             f"nov={stats['novelty']:.2f}"
         )
+
+        # ── Early snapshot (ciclos 1–5) ──────────────────────────────
+        if self.field.cycle in self._early_snapshot_cycles:
+            # Top 2 clusters por contradicción
+            top_clusters = sorted(
+                self.field.clusters.values(),
+                key=lambda c: c.contradiction,
+                reverse=True
+            )[:2]
+            # Tensión dominante
+            top_tension_score = max(
+                (t.intensity for t in self.field.tensions), default=0.0
+            )
+            self.early_snapshots.append({
+                "cycle":             self.field.cycle,
+                "energy":            round(self.field.energy, 1),
+                "cluster_count":     len(self.field.clusters),
+                "tension_count":     len(self.field.tensions),
+                "neurons_alive":     len(self.active_neurons),
+                "top_tension_score": round(top_tension_score, 3),
+                "top_2_clusters":    [
+                    {
+                        "label":              c.label[:50],
+                        "contradiction":      round(c.contradiction, 3),
+                        "novelty":            round(c.novelty, 3),
+                        "signal_count":       len(c.signal_ids),
+                    }
+                    for c in top_clusters
+                ],
+            })
 
         return should_close, reason
 
