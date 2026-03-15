@@ -206,3 +206,96 @@ Both control runs (R86, R87) closed with **0 active tensions** — unlike all pr
 ---
 
 *Gianfranco Trogetto · Neural Ecology V2 · March 2026*
+
+---
+
+## Phase 8 — Early cycle instrumentation (cycles 1–20)
+
+### Engineering
+
+**`orchestrator.py`** — added `early_snapshots` capture after each of cycles 1–20:
+
+```json
+{
+  "cycle": 10,
+  "energy": 85.5,
+  "cluster_count": 5,
+  "tension_count": 1,
+  "neurons_alive": 4,
+  "top_tension_score": 0.492,
+  "top_2_clusters": [...]
+}
+```
+
+**`distance_evaluator.py`** — added `--from_json` and `--auto_batch` flags. No longer requires KNOWN_RUNS for new runs. Added `load_dotenv()`.
+
+---
+
+## Phase 8.1 — Early bifurcation signal
+
+**Objective:** detect structural differences in cycles 1–20 between type-B migration runs and non-migration runs.
+
+### Finding: cycles 1–9 are structurally identical
+
+All runs — migrations and non-migrations — produce the same snapshot pattern in cycles 1–9:
+- Cycles 1–4: single cluster, zero tensions
+- Cycle 5: first 3 tensions appear (~0.415 top_t)
+- Cycle 9: tension reset to zero in all runs
+
+The bifurcation window is **cycles 10–20**, not 1–5.
+
+### Hypothesis lifecycle
+
+**H1 — Single-axis tension (tc=1)**
+```
+Formulated: R94 shows tc=1 with top_t 0.49→0.43 for 4 consecutive cycles (c10-c13)
+Tested: pattern present in R94 (migration)
+Falsified: R111 (tc=3 throughout, migration occurred at pivot c25)
+Status: REJECTED
+```
+
+**H2 — Sustained dominant tension (refined)**
+```
+Hypothesis: Type-B migration occurs when top_tension_score remains >= ~0.38
+across cycles 10–20 without collapsing to zero.
+
+Evidence:
+  R94  (migration): top_t never collapses in c10-20 (9/11 cycles >= 0.40)
+  R111 (migration): top_t never collapses in c10-20 (11/11 cycles >= 0.47)
+
+Non-migrations: most runs show at least one cycle where top_t = 0.0
+(the c9 reset pattern re-emerges intermittently in c10-20)
+
+Counterexample candidate:
+  R102 (paraphrase): sustained top_t similar to R94, but closed at cycle 20
+  → suggests sustained tension + sufficient cycles are both required
+
+Status: PRELIMINARY EVIDENCE — 2 confirmed cases, replication pending
+```
+
+### Conceptual reframe
+
+The signal is not *concentration* of tension but *continuity* of semantic pressure.
+
+> *A field that never relaxes eventually escapes its basin.*
+
+This shifts the interpretive frame from structural geometry (single axis) to temporal dynamics (sustained pressure). The tension count matters less than whether the dominant tension survives each cycle without resolution.
+
+### Dataset summary (Phase 8.1)
+
+```
+Runs with early snapshots c10-20: 11
+  Type-B migrations confirmed:  2  (R94, R111)
+  Non-migrations:                9
+  Open case:                     1  (R102)
+```
+
+### Next experiment
+
+Reproduce 2–3 additional type-B migrations with snapshots c1–20 and verify:
+- Does `top_tension_score` remain >= 0.38 throughout c10-20 in all cases?
+- Does R102-style early closure explain the exception?
+
+---
+
+*Gianfranco Trogetto · Neural Ecology V2 · March 2026*

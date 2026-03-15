@@ -41,9 +41,9 @@ class Orchestrator:
         self.final_result: Optional[str] = None
         self.close_reason: Optional[str] = None
 
-        # Snapshots de ciclos tempranos (1–5)
+        # Snapshots de ciclos tempranos (1–20)
         self.early_snapshots: list[dict] = []
-        self._early_snapshot_cycles = set(range(1, 6))  # ciclos 1 a 5
+        self._early_snapshot_cycles = set(range(1, 21))  # ciclos 1 a 20
 
     # ── Spawn de neuronas ─────────────────────────────────────────
 
@@ -243,7 +243,7 @@ class Orchestrator:
             f"nov={stats['novelty']:.2f}"
         )
 
-        # ── Early snapshot (ciclos 1–5) ──────────────────────────────
+        # ── Early snapshot (ciclos 1–20) ─────────────────────────────
         if self.field.cycle in self._early_snapshot_cycles:
             # Top 2 clusters por contradicción
             top_clusters = sorted(
