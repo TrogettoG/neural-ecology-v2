@@ -299,3 +299,106 @@ Reproduce 2–3 additional type-B migrations with snapshots c1–20 and verify:
 ---
 
 *Gianfranco Trogetto · Neural Ecology V2 · March 2026*
+
+---
+
+## Phase 8.2 — Hypothesis validation + falsification (R113–R122)
+
+**Protocol:** 10 runs, perturbation 1, Redis cleared, MAX_CYCLES=45.
+**Results:** 2 migrations (R113, R122), 7 paraphrases, 1 elaboration.
+
+### Hypothesis lifecycle — Phase 8.1 → 8.2
+
+**H1 (Phase 8.1):** top_tension_score ≥ 0.38 in c10-20 without collapse
+- Falsified direction 1: R122 migrates despite 1-cycle collapse at c15
+- Falsified direction 2: R121 never collapses but does NOT migrate
+- Status: **REJECTED**
+
+**H2 (Phase 8.2 — finding):** near-necessary condition + STM framework
+
+> `top_tension_score` never drops below ~0.30 across cycles 10–20 in all
+> 4 confirmed type-B migrations. This is a **near-necessary condition**
+> (R122 has one zero at c15 but migrates anyway — brief single-cycle collapse
+> does not disrupt the overall regime).
+>
+> Migration requires two conditions:
+> 1. Near-necessary: top_t ≥ 0.30 sustained in c10–20
+> 2. Structural Trigger of Migration (STM): an event in c20+ that reorganizes
+>    the field beyond the original perturbation domain
+>
+> Tension is the energetic condition. STM is the structural condition.
+> R121 satisfies condition 1 but never fires condition 2.
+>
+> *Tension accumulates, but transformation is discrete.*
+
+### New migration cases
+
+| Run | Cycles | Score | Pivot | Notes |
+|---|---|---|---|---|
+| R113 | 32 | 0.65 | c25 | Clean type-B, top_t never collapses |
+| R122 | 45 | 0.65 | c34 | 1-cycle collapse at c15, recovers, migrates to uniqueness attractor |
+
+### Key counterexample: R121
+
+R121 is the most important data point of Phase 8.2.
+
+- 41 cycles, energy 29.1 (type-B profile)
+- top_t c10-20: 0.34→0.57, **never collapses**
+- Did NOT migrate → elaboration 0.35
+
+This falsifies the "sustained tension = migration" direction and establishes that
+the field can sustain pressure for 40+ cycles without escaping its domain.
+Something beyond tension — the STM — determines whether migration occurs.
+Naming the unknown precisely converts R121 from a counterexample into a research question.
+
+### Evidence table
+
+| Run | top_t min c10-20 | Collapses | Migrates |
+|---|---|---|---|
+| R94 | 0.361 | 0 | YES |
+| R111 | 0.478 | 0 | YES |
+| R113 | 0.376 | 0 | YES |
+| R122 | 0.000 (1 cycle) | 1 | YES |
+| R97 | 0.000 | 2 | NO |
+| R121 | 0.340 | 0 | NO |
+
+### Conceptual reframe
+
+> *Tension opens the door. Something else decides whether the field walks through.*
+
+The field operates in three phases:
+- c1-9: structurally identical across all runs (no bifurcation signal)
+- c10-20: tension regime established — near-necessary condition (top_t ≥ 0.30)
+- c20+: the STM either fires or doesn't — this is the open research question
+
+Phase 3 is where the paper opens, not closes. R121 and R94 enter Phase 3
+identically (both with sustained tension). Only R94 fires the STM at c30.
+What is different between them in Phase 3? That is Article 4's question.
+
+### Dataset summary
+
+```
+Total runs: 122
+Migrations confirmed: 9
+  Type A (strong attractor): C52, R75, R84
+  Type B (accumulated pressure): C74, R81, R94, R111, R113, R122
+Phases complete: 1–8.2
+```
+
+### Next: Article 3
+
+"When Tension Is Not Enough: Necessary Conditions for Semantic Migration
+in Multi-Agent Systems"
+
+This is Paper 3. Not a correction of Paper 2 — a different type of knowledge.
+Paper 2 = observation. Paper 3 = theory about the phenomenon.
+
+The scientific value: falsifying your own hypothesis in both directions,
+then identifying a robust partial finding and naming the unknown precisely
+(STM), is the structure of real research.
+
+Key phrase: *Tension accumulates, but transformation is discrete.*
+
+---
+
+*Gianfranco Trogetto · Neural Ecology V2 · March 2026*

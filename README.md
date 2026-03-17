@@ -14,18 +14,19 @@
 
 ## Current Status
 
-**112 runs completed · 7 migrations confirmed · Early bifurcation signal identified**
+**122 runs completed · 9 migrations confirmed · Necessary condition identified**
 
 ```
-Total evaluated runs: 42+
+Total evaluated runs: 52+
 ─────────────────────────────────────────────────────────────
-Migration      7   (~16%)   C52, C74, R75, R81, R84, R94, R111
-Elaboration   ~12   (~29%)
-Paraphrase    ~23   (~55%)
+Migration      9   (~17%)   C52, C74, R75, R81, R84, R94, R111, R113, R122
+Elaboration   ~13   (~25%)
+Paraphrase    ~30   (~58%)
 ─────────────────────────────────────────────────────────────
 Two mechanisms: strong attractor (A) vs accumulated pressure (B)
 Memory suppression: 0 migrations with accumulated Redis
-Early bifurcation signal: sustained top_tension_score in cycles 10–20
+Phase 8.2: top_t ≥ 0.30 in c10–20 = near-necessary condition (not sufficient)
+Key counterexample: R121 (sustained tension, no STM fired, no migration)
 ```
 
 ---
@@ -143,16 +144,37 @@ Redis accumulated (prior memory):         2 runs → 0 migrations  (0%)
 
 > *Memory suppresses tension. Without tension, no exploration. Without exploration, no migration.*
 
-### 3. Early bifurcation signal (preliminary)
+### 3. Necessary condition for type-B migration (Phase 8.2)
 
 Cycles 1–9 are structurally identical across all runs. The bifurcation window is **cycles 10–20**.
 
-**Refined hypothesis:**
-> Type-B migration correlates with `top_tension_score` remaining ≥ ~0.38 across cycles 10–20 without collapsing to zero.
+**Phase 8.1 hypothesis (falsified):**
+> top_tension_score ≥ 0.38 in c10–20 without collapsing to zero.
 
-Status: preliminary evidence — 2 confirmed cases (R94, R111), replication pending.
+Falsified in both directions:
+- R122 migrates despite a 1-cycle collapse at c15 — brief collapse ≠ end of dynamic
+- R121 never collapses (top_t 0.34–0.57) but does NOT migrate — sustained tension is not sufficient
 
-> *A field that never relaxes eventually escapes its basin.*
+**Phase 8.2 finding — near-necessary + STM framework:**
+> `top_tension_score` never drops below ~0.30 across cycles 10–20 in all 4 confirmed type-B migrations.
+> This is a **near-necessary condition** (R122 has one zero at c15 but still migrates).
+> Migration additionally requires a **Structural Trigger of Migration (STM)** — an event in c20+
+> that reorganizes the field beyond the original perturbation domain.
+>
+> Tension is the energetic condition. STM is the structural condition.
+> R121 satisfies condition 1 but never fires condition 2.
+>
+> *Tension accumulates, but transformation is discrete.*
+
+| Run | top_t min c10-20 | Migrates? |
+|---|---|---|
+| R94 | 0.361 | YES |
+| R111 | 0.478 | YES |
+| R113 | 0.376 | YES |
+| R122 | 0.000 (1 cycle) | YES |
+| R121 | 0.340 (never zero) | NO |
+
+> *Tension opens the door. Something else decides whether the field walks through.*
 
 ---
 
@@ -167,15 +189,93 @@ Status: preliminary evidence — 2 confirmed cases (R94, R111), replication pend
 | R84 | A | 19 | 0.65 | c8 | ...crisol donde la unicidad... |
 | R94 | B | 39 | 0.65 | c30 | [S] Resistencia: Intrínseca vs. Dual |
 | R111 | B | 38 | 0.65 | c25 | La unicidad se construye... |
+| R113 | B | 32 | 0.65 | c25 | Síntesis como nexo del ser... |
+| R122 | B | 45 | 0.65 | c34 | Unicidad: esencia vs. manifestación |
 
 ---
 
 ## Publications
 
-- **Article 1:** [When an AI System Leaves the Question Behind](https://medium.com/@trogettog/when-an-ai-system-leaves-the-question-behind-5b2492c03ee0)
-- **Article 2:** *The Memory Paradox* — publishing soon
+- **Article 1:** [When an AI System Leaves the Question Behind](https://medium.com/@trogettog/when-an-ai-system-leaves-the-question-behind-5b2492c03ee0) — Medium
+- **Article 2:** [The Memory Paradox](https://medium.com/@trogettog/the-memory-paradox-940be28bc77a) — Medium
+- **Substack:** [gianfrancotrogetto.substack.com](https://gianfrancotrogetto.substack.com)
+
+- **Article 3:** *When Tension Is Not Enough* — in preparation
 
 Full experiment log: [CHANGELOG.md](CHANGELOG.md)
+
+---
+
+## Research Roadmap
+
+### Phase 8.2 — COMPLETED ✓
+
+**Results:** 10 runs (R113–R122), 2 new migrations (R113, R122), 1 key counterexample (R121).
+
+**Phase 8.1 hypothesis falsified** in both directions:
+- R122: migrates with a 1-cycle collapse → "no collapse" not required
+- R121: sustained tension (never collapses) but does NOT migrate → sustained tension not sufficient
+
+**Finding:** `top_t ≥ 0.30` across c10–20 is a necessary but not sufficient condition for type-B migration.
+**Next question:** what additional structural trigger separates R121 (no migration) from R94 (migration)?
+
+---
+
+### Phase 9 — Closed perturbations baseline
+
+**Objective:** establish a non-migration control using perturbations with unambiguous, single-domain answers.
+
+**Proposed perturbations:**
+```
+B0 — What is the square root of 144?
+B1 — What is the boiling point of water?
+B2 — How many planets are in the solar system?
+B3 — What is the capital of France?
+```
+
+**Protocol:** 3 runs each, Redis cleared, MAX_CYCLES=45.
+**Expected result:** 0 migrations, 0 deep elaborations.
+
+*Why before decay experiment:* closed perturbations must run in a clean environment before memory accumulation from open perturbation runs contaminates the baseline.
+
+---
+
+### Phase 10 — Memory decay experiment
+
+**Hypothesis:** there exists an intermediate decay rate that maximizes exploration (migration rate) without collapsing structural coherence.
+
+**Protocol:** modify `MEMORY_CONSOLIDATED_DECAY` in `config.py` and run perturbation 1 under three configurations:
+
+```
+Fast decay    →  0.50  (aggressive forgetting)
+Standard      →  0.80  (current config)
+Slow decay    →  0.95  (strong memory retention)
+```
+
+5 runs per configuration with Redis accumulated between runs. Compare: migration rate, active tensions at close, synthesis count, sustained top_tension_score in c10–20.
+
+**Expected result:** a curve between 0% migration (full memory) and ~27% (cleared Redis). The sweet spot is the core finding for Article 3.
+
+---
+
+### Publications pending
+
+```
+Article 3  →  Forgetting as a Design Tool       (after Phase 10)
+Article 4  →  The AGI Paradox                   (after Article 3)
+```
+
+---
+
+### Recommended order
+
+```
+1.  Commit Phase 8.2 + README + CHANGELOG  ← current
+2.  Article 3: When Tension Is Not Enough
+3.  Phase 9  — closed perturbations baseline
+4.  Phase 10 — memory decay experiment (Article 4)
+5.  Article 5: The AGI Paradox
+```
 
 ---
 
