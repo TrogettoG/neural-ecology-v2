@@ -402,3 +402,91 @@ Key phrase: *Tension accumulates, but transformation is discrete.*
 ---
 
 *Gianfranco Trogetto · Neural Ecology V2 · March 2026*
+
+---
+
+## Phase 9 — Input Invariance Test (R123–R134)
+
+**Original objective:** establish a non-migration baseline using closed perturbations.
+**What actually happened:** epistemic pivot.
+
+### Protocol
+- 4 closed perturbations (B6–B9), 3 runs each, Redis cleared, MAX_CYCLES=45
+- Perturbations: √144, boiling point of water, planets in solar system, capital of France
+
+### Results
+
+```
+Perturbation             Migrations   Rate
+────────────────────────────────────────
+Raíz cuadrada (144)      1/3          33%
+Punto de ebullición      3/3         100%
+Planetas sistema solar   2/3          67%
+Capital de Francia       1/3          33%
+────────────────────────────────────────
+Total                    7/12         58%
+```
+
+**Open perturbation 1 baseline for comparison:** ~17% migration rate.
+
+### Epistemic pivot — "closed perturbations" do not exist in this system
+
+The original hypothesis was falsified completely:
+
+> *"Closed perturbations never produce migration."*
+
+Not only did they produce migration — they produced it at a higher rate than open perturbations.
+
+### What this reveals
+
+**Conceptual openness is a property of the processor, not the input.**
+
+The field does not read that √144 has a unique answer. When the LLM generates signals in response to the question, it produces semantically rich content (numbers, perfection, base 10, mathematical construction) that is sufficient to create tensions and eventually migrate.
+
+What we call a "closed question" is a human epistemic category. For the semantic field, it is just another starting point.
+
+### Failure of the near-necessary condition
+
+The top_t ≥ 0.30 pattern identified in Phase 8.2 does not generalize:
+
+```
+R126 (migration): 2 collapses in c10-20  → migrates anyway
+R128 (migration): 8 collapses in c10-20  → migrates anyway
+R129 (migration): 8 collapses in c10-20  → migrates anyway
+R130 (migration): 8 collapses in c10-20  → migrates anyway
+```
+
+The near-necessary condition holds for perturbation 1 (type-B migrations) but does not hold cross-perturbation. It may be a perturbation-specific pattern, not a universal property.
+
+### Reframing: Phase 9 as input invariance test
+
+Phase 9 is not a failed baseline experiment. It is evidence that the system is largely **input-invariant** at the level of question structure.
+
+Migration is not triggered by open-ended questions. It is the default behavior of the system under sufficient semantic pressure — regardless of what triggered that pressure.
+
+### New research questions
+
+The relevant question is no longer:
+> *"When does the system migrate?"*
+
+It is:
+> *"What inhibits migration?"*
+
+Three candidates:
+1. **Memory** — confirmed in Phase 7 (0% with accumulated Redis)
+2. **Semantic constraints** — untested
+3. **Run length** — does everything migrate given enough cycles?
+
+### Impact on Article 5
+
+This finding reframes The AGI Paradox entirely.
+
+The system is not *capable* of migration under certain conditions.
+The system *defaults* to migration — and memory is what suppresses it.
+
+The industry is not just failing to build systems that can explore.
+It may be actively suppressing a default exploratory behavior that emerges naturally from semantic tension.
+
+---
+
+*Gianfranco Trogetto · Neural Ecology V2 · March 2026*

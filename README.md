@@ -176,6 +176,18 @@ Falsified in both directions:
 
 > *Tension opens the door. Something else decides whether the field walks through.*
 
+### 4. Input invariance (Phase 9 — epistemic pivot)
+
+Closed perturbations (√144, boiling point, planets, capital of France) were expected to produce zero migrations. Instead, 7 of 12 runs migrated — a 58% rate, higher than open perturbations.
+
+**Core insight:** conceptual openness is not a property of the question. It is a property of the LLM. The field generates semantically rich signals from any input, sufficient to create tensions and migrate.
+
+What we call a "closed question" is a human epistemic category. For the field, it is just a starting point.
+
+> *The system does not migrate when conditions are right. It migrates by default — and memory is what suppresses it.*
+
+**New research question:** what inhibits migration? Three candidates: memory (confirmed), semantic constraints (untested), run length.
+
 ---
 
 ## Confirmed Migration Cases
@@ -270,11 +282,9 @@ Article 4  →  The AGI Paradox                   (after Article 3)
 ### Recommended order
 
 ```
-1.  Commit Phase 8.2 + README + CHANGELOG  ← current
-2.  Article 3: When Tension Is Not Enough
-3.  Phase 9  — closed perturbations baseline
-4.  Phase 10 — memory decay experiment (Article 4)
-5.  Article 5: The AGI Paradox
+1.  Commit Phase 9 + README + CHANGELOG  ← current
+2.  Article 3: When Tension Is Not Enough  ← ready to publish
+
 ```
 
 ---

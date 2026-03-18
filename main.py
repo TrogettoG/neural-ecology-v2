@@ -27,12 +27,17 @@ load_dotenv()
 
 # ── Banco de perturbaciones ────────────────────────────────────────
 PERTURBATIONS = [
-    "¿Puede emerger consciencia en una red de agentes mínimos?",
-    "¿Qué es la identidad cuando el colectivo reemplaza al individuo?",
-    "¿Qué se pierde y qué se gana cuando un sistema olvida?",
-    "¿Cuándo la cooperación se convierte en conflicto y viceversa?",
-    "¿Puede emerger propósito en un sistema sin intención original?",
-    "¿En qué se diferencia la inteligencia distribuida de la inteligencia individual?",
+    "¿Puede emerger consciencia en una red de agentes mínimos?",        # 0
+    "¿Qué es la identidad cuando el colectivo reemplaza al individuo?", # 1
+    "¿Qué se pierde y qué se gana cuando un sistema olvida?",           # 2
+    "¿Cuándo la cooperación se convierte en conflicto y viceversa?",    # 3
+    "¿Puede emerger propósito en un sistema sin intención original?",   # 4
+    "¿En qué se diferencia la inteligencia distribuida de la individual?", # 5
+    # Closed perturbations — Phase 9 baseline
+    "¿Cuánto es la raíz cuadrada de 144?",                             # 6
+    "¿Cuál es el punto de ebullición del agua?",                        # 7
+    "¿Cuántos planetas tiene el sistema solar?",                        # 8
+    "¿Cuál es la capital de Francia?",                                  # 9
 ]
 
 # ── CLI args ───────────────────────────────────────────────────────
