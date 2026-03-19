@@ -286,24 +286,6 @@ Slow decay    →  0.95  (strong memory retention)
 
 ---
 
-### Publications pending
-
-```
-Article 3  →  Forgetting as a Design Tool       (after Phase 10)
-Article 4  →  The AGI Paradox                   (after Article 3)
-```
-
----
-
-### Recommended order
-
-```
-1.  Commit Phase 10 + README + CHANGELOG  ← current
-2.  Publish Article 3: When Tension Is Not Enough
-3.  Write Article 4: Forgetting as a Design Tool
-4.  Write Article 5: The AGI Paradox
-```
-
 ---
 
 *Gianfranco Trogetto — March 2026*
