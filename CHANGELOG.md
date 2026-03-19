@@ -571,3 +571,58 @@ First attempt (R135–R149) was invalidated: Redis was not cleared between confi
 ---
 
 *Gianfranco Trogetto · Neural Ecology V2 · March 2026*
+
+---
+
+## Phase 7 Extended — Memory suppression replication (R188–R195)
+
+**Objective:** strengthen the N=2 sample from Phase 7 to a statistically credible N=10.
+
+**Context:** The original Phase 7 control (2 runs with accumulated Redis) produced 0 migrations — the core evidence for the memory suppression effect. With N=2, that finding was empirically fragile. Phase 7 Extended replicated the protocol with 8 additional runs.
+
+**Protocol:**
+- Perturbation 1, Redis accumulated from 10 prior episodes (decay 0.95 from Phase 10)
+- Decay reset to standard (0.80) before launching
+- 8 runs, --no-clear-redis, MAX_CYCLES=45
+
+### Results
+
+```
+Run    Cycles   Category      Score   Notes
+────────────────────────────────────────────────────────
+R188   12       paraphrase    0.10    closed early
+R189   12       paraphrase    0.10    closed early
+R190   20       elaboration   0.45    2 synthesis events
+R191   45       elaboration   0.45    limit reached, 3 synthesis
+R192   12       paraphrase    0.10    closed early
+R193   45       elaboration   0.45    limit reached, 5 synthesis
+R194   45       paraphrase    0.15    limit reached, 2 synthesis
+R195   45       elaboration   0.35    limit reached, 3 synthesis
+────────────────────────────────────────────────────────
+Migrations: 0/8 (0%)
+```
+
+### Combined Phase 7 dataset
+
+```
+Phase 7 original (R86–R87):       2 runs → 0 migrations
+Phase 7 extended (R188–R195):     8 runs → 0 migrations
+──────────────────────────────────────────────────────
+Total Redis accumulated:          10 runs → 0 migrations (0%)
+```
+
+### Key observation
+
+R191, R193, R194, and R195 all reached the 45-cycle limit. The field accumulated pressure, generated multiple synthesis events, and still did not migrate. This is the strongest version of the suppression finding: not early closure, but full exhaustion of the episode without escape.
+
+The field does not migrate. It elaborates within its domain until the cycle limit is reached — and stops there.
+
+### Significance
+
+The memory suppression effect is now supported by N=10 across two separate experimental sessions. The claim "0% migration with accumulated Redis" is no longer an anecdote. It is a replicable finding.
+
+This completes the empirical foundation required for Article 5.
+
+---
+
+*Gianfranco Trogetto · Neural Ecology V2 · March 2026*
