@@ -8,8 +8,9 @@ del campo, clasificando el resultado como paráfrasis, elaboración o migración
 
 Uso:
     python distance_evaluator.py --run_id 52
-    python distance_evaluator.py --inline   # modo interactivo
-    python distance_evaluator.py --batch    # evalúa corridas conocidas
+    python distance_evaluator.py --inline       # modo interactivo
+    python distance_evaluator.py --batch        # evalúa corridas conocidas
+    python distance_evaluator.py --auto_batch   # evalua las no conocidas
 
 Salida JSON por corrida:
     {

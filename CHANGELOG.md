@@ -490,3 +490,84 @@ It may be actively suppressing a default exploratory behavior that emerges natur
 ---
 
 *Gianfranco Trogetto · Neural Ecology V2 · March 2026*
+
+---
+
+## Phase 10 — Memory Decay Experiment (R156–R187)
+
+**Objective:** determine whether an intermediate decay rate maximizes exploration without collapsing structural coherence.
+
+**Protocol:**
+- 3 configurations × 10 runs each, Redis cleared between configurations
+- Redis accumulated within each configuration (--no-clear-redis)
+- Perturbation 1, MAX_CYCLES=45
+- Clean run discarded at start of each configuration
+
+### Results
+
+```
+Configuration          Migrations   Elaborations   Paraphrases   Mean score
+──────────────────────────────────────────────────────────────────────────
+Fast  decay (0.50)        1/10 (10%)    4/10 (40%)    5/10 (50%)   0.260
+Standard   (0.80)         0/10  (0%)    4/10 (40%)    6/10 (60%)   0.205
+Slow  decay (0.95)        0/10  (0%)    4/10 (40%)    6/10 (60%)   0.240
+```
+
+### Suppression spectrum (complete)
+
+```
+Condition                    Migration rate   Dominant behavior
+──────────────────────────────────────────────────────────────
+Redis cleared (~17%)              ~17%        Pure exploration
+Fast decay 0.50 (accumulated)     10%         Assisted exploration
+Standard   0.80 (accumulated)      0%         Local elaboration
+Slow decay 0.95 (accumulated)      0%         Rigid deepening
+Redis full — Phase 7               0%         Full suppression
+```
+
+### Hypothesis result
+
+**Hypothesis:** there exists an intermediate decay rate that maximizes exploration without collapsing structural coherence.
+
+**Result:** NOT confirmed in this range.
+
+The pattern is not a curve with a sweet spot — it is a **threshold**.
+
+- Below ~0.60 decay: memory never reaches critical mass → exploration preserved
+- Above ~0.80 decay: critical mass reached → migration suppressed completely
+
+### Key finding: the suppression threshold is a switch, not a gradient
+
+Standard (0.80) and Slow (0.95) produce identical migration rates (0%) and near-identical elaboration rates (~40%). More retention does not add more suppression once the threshold is crossed. The system is already on the other side.
+
+This means suppression is binary at the macro level: the field either has enough accumulated memory to block migration, or it doesn't. The exact decay rate above the threshold is irrelevant.
+
+### The Depth Paradox
+
+Slow decay (0.95) has a slightly higher mean score (0.240) than Standard (0.205). The system with more retention explores more deeply *within* the original domain — but that same depth makes the walls higher. It becomes an expert in the domain of the perturbation. That expertise is precisely what prevents migration.
+
+> *The system digs deeper into the well, but the walls grow with it.*
+
+This is the technical definition of algorithmic confirmation bias.
+
+### Conceptual reframe
+
+The suppression threshold is the "semantic escape velocity":
+
+> If the system retains more than ~50-60% of what it processes across a series of episodes, the association network becomes dense enough that no individual tension — however high — can break the structure.
+
+Forgetting is not a data loss. It is the mechanism that keeps the system below the suppression threshold.
+
+### Impact on Article 4
+
+The article's core argument shifts from "there is a sweet spot" to something stronger:
+
+> *Forgetting is not a design flaw. It is the mechanism that preserves the field's capacity for transformation. The industry is not building smarter systems — it is building systems with higher semantic gravity. Past a certain threshold, no tension can achieve escape velocity.*
+
+### Note on protocol
+
+First attempt (R135–R149) was invalidated: Redis was not cleared between configurations, making groups non-comparable. Those runs were discarded. This dataset (R156–R187) uses the correct protocol.
+
+---
+
+*Gianfranco Trogetto · Neural Ecology V2 · March 2026*

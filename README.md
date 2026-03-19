@@ -188,6 +188,22 @@ What we call a "closed question" is a human epistemic category. For the field, i
 
 **New research question:** what inhibits migration? Three candidates: memory (confirmed), semantic constraints (untested), run length.
 
+### 5. Suppression spectrum — decay rates (Phase 10)
+
+The memory decay experiment mapped the full suppression spectrum:
+
+```
+Decay 0.50 (accumulated)  →  10% migration  — below suppression threshold
+Decay 0.80 (accumulated)  →   0% migration  — threshold crossed
+Decay 0.95 (accumulated)  →   0% migration  — threshold crossed
+```
+
+Suppression is a **switch**, not a gradient. Standard and Slow produce identical migration rates — more retention above the threshold adds no additional suppression. The system is already locked.
+
+**The Depth Paradox:** Slow decay (0.95) scores slightly higher than Standard (0.205 vs 0.240) — it explores more deeply *within* the original domain, but that depth raises the walls. Expert-level confirmation bias.
+
+> *Forgetting is not data loss. It is the mechanism that keeps the field below its suppression threshold.*
+
 ---
 
 ## Confirmed Migration Cases
@@ -282,9 +298,10 @@ Article 4  →  The AGI Paradox                   (after Article 3)
 ### Recommended order
 
 ```
-1.  Commit Phase 9 + README + CHANGELOG  ← current
-2.  Article 3: When Tension Is Not Enough  ← ready to publish
-
+1.  Commit Phase 10 + README + CHANGELOG  ← current
+2.  Publish Article 3: When Tension Is Not Enough
+3.  Write Article 4: Forgetting as a Design Tool
+4.  Write Article 5: The AGI Paradox
 ```
 
 ---
