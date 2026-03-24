@@ -760,3 +760,54 @@ The uniqueness attractor (observed across multiple runs) may be the first answer
 ---
 
 *Gianfranco Trogetto · Neural Ecology V2 · March 2026*
+
+---
+
+## Phase 12 — LLM Direct Comparison (R236–R245 + R5000–R5060)
+
+**Objective:** determine whether Neural Ecology produces qualitatively different conceptual exploration than a direct LLM call.
+
+**Protocol:**
+- Condition A: LLM direct, temperature 0.1 (10 runs × 3 perturbations)
+- Condition B: LLM direct, temperature 0.9 (10 runs × 3 perturbations)
+- Condition C: Neural Ecology, standard config (10 runs × 3 perturbations)
+- Perturbations: P1 (identity/collective), P4 (purpose without intention), P6 (√144)
+- Same evaluator (distance_evaluator.py) across all conditions
+
+### Results
+
+```
+Perturbation    Condition              Mig%   Elab%   Par%
+──────────────────────────────────────────────────────────
+P1              LLM temp 0.1 (A)       20%    80%      0%
+P1              LLM temp 0.9 (B)        0%   100%      0%
+P1              Neural Ecology         17%    25%     58%
+
+P4              LLM temp 0.1 (A)        0%   100%      0%
+P4              LLM temp 0.9 (B)        0%    70%     30%
+P4              Neural Ecology          0%    20%     80%
+
+P6 (√144)       LLM temp 0.1 (A)       90%    10%      0%
+P6 (√144)       LLM temp 0.9 (B)       80%    10%     10%
+P6 (√144)       Neural Ecology         33%     0%     67%
+```
+
+### Findings
+
+**P6 (√144):** The LLM direct migrates at 90% (low temp) and 80% (high temp). Neural Ecology migrated at 33% in Phase 9. The architecture suppresses migration relative to the base model. Conceptual openness with closed questions is a property of the LLM, not the architecture.
+
+**P1 (identity/collective):** LLM high temp produces 0% migration and 100% elaboration — more consistent than Neural Ecology (17% migration, 58% paraphrase, 25% elaboration). The multi-agent architecture produces more variance, including more noise (paraphrase) and more extreme cases in both directions.
+
+**P4 (purpose without intention):** 0% migration across all conditions. Neural Ecology produces more paraphrase (80%) than either LLM condition. The LLM direct elaborates more consistently.
+
+### Conclusion
+
+The LLM direct elaborates more consistently, migrates more with closed questions, and produces less noise. Neural Ecology produces more variance in outcomes — more paraphrase and, in P1, comparable migration — but does not produce more exploration quality.
+
+The multi-agent architecture does not amplify the base model's exploration. It redistributes it — converting a model that converges toward consistent elaborations into a system that produces a wider spectrum of results, including more noise and more extreme outcomes in both directions.
+
+This is the final experiment of the Neural Ecology V2 series.
+
+---
+
+*Gianfranco Trogetto · Neural Ecology V2 · March 2026*

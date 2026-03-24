@@ -30,8 +30,11 @@ Phase 9:   epistemic pivot — closed perturbations migrate at 58%
 Phase 10:  suppression threshold between decay 0.50–0.80 (switch, not gradient)
 Phase 11:  STM forensic search — migration is not locally observable
            The system cannot detect its own conceptual transition.
-           Noise drift vs true migration: structurally identical internally,
-           distinguishable only by an external observer.
+Phase 12:  LLM direct comparison — architecture redistributes, not amplifies
+           LLM direct migrates more with closed questions (P6: 90% vs 33%)
+           Neural Ecology produces more variance, not more exploration quality
+
+Series closed — March 2026
 ```
 
 ---
