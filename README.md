@@ -14,19 +14,24 @@
 
 ## Current Status
 
-**122 runs completed · 9 migrations confirmed · Necessary condition identified**
+**235 runs completed · 19 migrations confirmed · Suppression spectrum mapped · STM frontier identified**
 
 ```
-Total evaluated runs: 52+
+Total evaluated runs: 235+
 ─────────────────────────────────────────────────────────────
-Migration      9   (~17%)   C52, C74, R75, R81, R84, R94, R111, R113, R122
-Elaboration   ~13   (~25%)
-Paraphrase    ~30   (~58%)
+Migration     ~19   (~17%)
+Elaboration   ~40   (~25%)
+Paraphrase    ~75   (~58%)
 ─────────────────────────────────────────────────────────────
 Two mechanisms: strong attractor (A) vs accumulated pressure (B)
-Memory suppression: 0 migrations with accumulated Redis
-Phase 8.2: top_t ≥ 0.30 in c10–20 = near-necessary condition (not sufficient)
-Key counterexample: R121 (sustained tension, no STM fired, no migration)
+Phase 7:   memory suppression — 0/10 migrations with accumulated Redis (N=10)
+Phase 8.2: top_t ≥ 0.30 in c10–20 = near-necessary condition (perturbation 1)
+Phase 9:   epistemic pivot — closed perturbations migrate at 58%
+Phase 10:  suppression threshold between decay 0.50–0.80 (switch, not gradient)
+Phase 11:  STM forensic search — migration is not locally observable
+           The system cannot detect its own conceptual transition.
+           Noise drift vs true migration: structurally identical internally,
+           distinguishable only by an external observer.
 ```
 
 ---
@@ -204,6 +209,25 @@ Suppression is a **switch**, not a gradient. Standard and Slow produce identical
 
 > *Forgetting is not data loss. It is the mechanism that keeps the field below its suppression threshold.*
 
+### 6. STM forensic search — Phase 11
+
+40 runs with full cycle-by-cycle snapshots (c1–45). Objective: identify the Structural Trigger of Migration.
+
+Three hypotheses tested: synthesis chain direction, domain-exit events, no-return condition. All partially falsified by the same case: **R217 vs R214** — structurally identical Phase 3 profiles, one migrates, one does not.
+
+**Core finding:** migration is not a locally observable event. The system cannot detect its own conceptual transition.
+
+Two types of domain exit:
+
+- **Noise drift** — field exits the domain but reaches a semantically generic configuration. Evaluator: elaboration.
+- **True migration** — field exits the domain and stabilizes in a coherent alternative configuration. Evaluator: migration.
+
+Both look identical from inside the system. The distinction is visible only from outside.
+
+> *The STM is not a structural event internal to the system. It is a classification of the outcome by an external observer.*
+
+This is not a failure of the experiment. It defines the frontier of internal observability — and opens the next research question: what makes a destination domain stable enough for the field to remain in it?
+
 ---
 
 ## Confirmed Migration Cases
@@ -219,6 +243,11 @@ Suppression is a **switch**, not a gradient. Standard and Slow produce identical
 | R111 | B | 38 | 0.65 | c25 | La unicidad se construye... |
 | R113 | B | 32 | 0.65 | c25 | Síntesis como nexo del ser... |
 | R122 | B | 45 | 0.65 | c34 | Unicidad: esencia vs. manifestación |
+| R137 | B | 18 | 0.75 | c13 | (Phase 10 — Fast decay) |
+| R158 | B | 26 | 0.75 | c26 | (Phase 10 — Fast decay) |
+| R214 | B | 45 | 0.65 | c38 | [S] Individuo Activo vs. Esencia Única |
+| R220 | B | 45 | 0.65 | c34 | [S] Fragilidad: Puerta al Crecimiento |
+| R227 | B | 45 | 0.65 | c38 | [S] Fluidez Autónoma en la Unidad |
 
 ---
 
@@ -228,7 +257,8 @@ Suppression is a **switch**, not a gradient. Standard and Slow produce identical
 - **Article 2:** [The Memory Paradox](https://medium.com/@trogettog/the-memory-paradox-940be28bc77a) — Medium
 - **Substack:** [gianfrancotrogetto.substack.com](https://gianfrancotrogetto.substack.com)
 
-- **Article 3:** *When Tension Is Not Enough* — in preparation
+- **Article 3:** [When Tension Is Not Enough](https://medium.com/@trogettog/when-tension-is-not-enough-1d4089971368) — Medium
+- **Article 4:** [Forgetting as a Design Tool](https://medium.com/@trogettog/forgetting-as-a-design-tool-dabc357a379f) — Medium
 
 Full experiment log: [CHANGELOG.md](CHANGELOG.md)
 

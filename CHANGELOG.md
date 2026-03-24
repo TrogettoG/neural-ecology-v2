@@ -626,3 +626,137 @@ This completes the empirical foundation required for Article 5.
 ---
 
 *Gianfranco Trogetto · Neural Ecology V2 · March 2026*
+
+---
+
+## Phase 11 — STM Forensic Search (R196–R235)
+
+**Objective:** identify the Structural Trigger of Migration — the discrete event in Phase 3 (cycles 20+) that causes the field to reorganize outside the original domain.
+
+**Protocol:**
+- Perturbation 1, Redis cleared, MAX_CYCLES=45
+- Full cycle-by-cycle snapshots (c1–45) enabled for all runs
+- 40 runs across two batches (R196–R215, R216–R235)
+- 3 migrations confirmed: R214 (pivot c38), R220 (pivot c34), R227 (pivot c38)
+
+---
+
+### What we looked for
+
+Article 3 introduced the STM as a hypothesis: a discrete structural event in Phase 3 that tension enables but does not cause. Phase 11 was designed to find it by comparing full cycle-by-cycle snapshots between runs that migrate and runs that don't.
+
+---
+
+### What we found
+
+**The synthesis chain direction hypothesis (v1):**
+
+Initial analysis of R214 suggested that migration follows a cascade of synthesis events with decreasing semantic distance to the original domain — a progressive drift outward. Elaborations showed synthesis chains that rotated within the domain.
+
+This held for R214. It did not generalize.
+
+**The domain-exit hypothesis (v2):**
+
+Revised hypothesis: migration requires at least one synthesis event in Phase 3 with zero semantic overlap with the original domain.
+
+Falsified. R203 and R217 both produced synthesis events outside the domain and did not migrate.
+
+**The no-return hypothesis (v3):**
+
+Revised hypothesis: migration requires a domain-exit synthesis from which the field does not return.
+
+Partially supported — but R217 breaks it. R217 ends on a domain-exit synthesis with no subsequent return, identical in structure to R214, and does not migrate.
+
+---
+
+### The key comparison: R214 vs R217
+
+Both runs share the same structural profile in Phase 3:
+- Multiple synthesis events
+- Final synthesis outside the original domain
+- No subsequent synthesis to return
+
+```
+R217: final synthesis → [S] Forja-Red: Dinámica de Génesis-Efecto
+      evaluation → elaboration, score 0.45
+
+R214: final synthesis → [S] Unicidad como motor evolutivo
+      evaluation → migration, score 0.65
+```
+
+The structural difference is invisible from within the system. What differs is the *destination* — the semantic coherence of the domain reached, not the structural properties of the transition.
+
+---
+
+### The actual finding
+
+**Migration is not a locally observable event.**
+
+Every hypothesis tested attempted to identify migration from internal signals: tension scores, synthesis count, synthesis direction, domain distance. None produced a reliable predictor.
+
+The reason is structural: the difference between migration and elaboration is not in *how* the field moves, but in *where it stabilizes*. And the stability of the destination is a global property of the final configuration — not a local property of any cycle or event within it.
+
+This is why the STM cannot be found in the data: it does not exist as a local event. It exists only in retrospect, as a description of the outcome.
+
+---
+
+### Two types of domain exit
+
+The data suggests a distinction the system cannot make internally:
+
+**Noise drift:** the field generates a synthesis outside the original domain but the destination is semantically generic or unstable. The field has left but has not arrived anywhere. The evaluator classifies this as elaboration.
+
+**True migration:** the field generates a synthesis outside the original domain and stabilizes in a semantically coherent alternative configuration. The evaluator detects the new domain.
+
+Both look identical from inside the system. The distinction is visible only from outside.
+
+---
+
+### Implications
+
+This is a finding about the limits of internal observability, not a failure of the experiment.
+
+The field cannot detect its own conceptual transition. It can generate conditions that make migration possible — sustained tension, synthesis cascades, domain-exit events. But whether those conditions produce a migration or a noise drift depends on the semantic properties of the destination, which only an external evaluator can assess.
+
+This reframes the open question from Article 3:
+
+> *"What the STM is, we do not yet know."*
+
+After Phase 11, the more precise statement is:
+
+> *The STM is not a structural event internal to the system. It is a classification of the outcome by an external observer. The system cannot know when it has migrated — it can only be told.*
+
+This has implications beyond this architecture. Any system that explores conceptual space faces the same problem: the difference between a genuine conceptual shift and a deviation into noise is not detectable from the inside. It requires an external reference — a judgment about what constitutes a coherent domain.
+
+---
+
+### Dataset summary
+
+```
+Total runs Phase 11:    40
+Migrations:             3  (R214, R220, R227)
+Migration rate:         7.5%  (consistent with historical ~17% baseline — 
+                               lower due to stochastic variance at N=40)
+
+Runs with full snapshots (c1–45): 40
+Runs with Phase 3 synthesis:      ~15
+Domain-exit syntheses (score=0):  7 events across 5 runs
+  → 3 in migration runs (all confirmed migrations)
+  → 4 in non-migration runs (not sufficient for migration)
+```
+
+---
+
+### What this opens
+
+The finding that migration is not locally observable is not a dead end. It defines a new research question:
+
+> *What makes a conceptual domain stable enough for the field to remain in it?*
+
+This is a question about the destination, not the transition. And it points toward a different experimental design: instead of tracking the field's internal state during migration, track the semantic properties of the domains where stable migrations land.
+
+The uniqueness attractor (observed across multiple runs) may be the first answer: it is a domain with high semantic coherence and low overlap with identity/collective territory. That coherence is what the external evaluator detects. That coherence is what the system cannot see from inside.
+
+---
+
+*Gianfranco Trogetto · Neural Ecology V2 · March 2026*

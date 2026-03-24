@@ -43,7 +43,7 @@ class Orchestrator:
 
         # Snapshots de ciclos tempranos (1–20)
         self.early_snapshots: list[dict] = []
-        self._early_snapshot_cycles = set(range(1, 21))  # ciclos 1 a 20
+        self._early_snapshot_cycles = set(range(1, 46))  # ciclos 1 a N
 
     # ── Spawn de neuronas ─────────────────────────────────────────
 
