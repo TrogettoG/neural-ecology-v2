@@ -258,64 +258,11 @@ This is not a failure of the experiment. It defines the frontier of internal obs
 
 - **Article 1:** [When an AI System Leaves the Question Behind](https://medium.com/@trogettog/when-an-ai-system-leaves-the-question-behind-5b2492c03ee0) — Medium
 - **Article 2:** [The Memory Paradox](https://medium.com/@trogettog/the-memory-paradox-940be28bc77a) — Medium
-- **Substack:** [gianfrancotrogetto.substack.com](https://gianfrancotrogetto.substack.com)
-
 - **Article 3:** [When Tension Is Not Enough](https://medium.com/@trogettog/when-tension-is-not-enough-1d4089971368) — Medium
 - **Article 4:** [Forgetting as a Design Tool](https://medium.com/@trogettog/forgetting-as-a-design-tool-dabc357a379f) — Medium
+- **Substack:** [gianfrancotrogetto.substack.com](https://gianfrancotrogetto.substack.com)
 
 Full experiment log: [CHANGELOG.md](CHANGELOG.md)
-
----
-
-## Research Roadmap
-
-### Phase 8.2 — COMPLETED ✓
-
-**Results:** 10 runs (R113–R122), 2 new migrations (R113, R122), 1 key counterexample (R121).
-
-**Phase 8.1 hypothesis falsified** in both directions:
-- R122: migrates with a 1-cycle collapse → "no collapse" not required
-- R121: sustained tension (never collapses) but does NOT migrate → sustained tension not sufficient
-
-**Finding:** `top_t ≥ 0.30` across c10–20 is a necessary but not sufficient condition for type-B migration.
-**Next question:** what additional structural trigger separates R121 (no migration) from R94 (migration)?
-
----
-
-### Phase 9 — Closed perturbations baseline
-
-**Objective:** establish a non-migration control using perturbations with unambiguous, single-domain answers.
-
-**Proposed perturbations:**
-```
-B0 — What is the square root of 144?
-B1 — What is the boiling point of water?
-B2 — How many planets are in the solar system?
-B3 — What is the capital of France?
-```
-
-**Protocol:** 3 runs each, Redis cleared, MAX_CYCLES=45.
-**Expected result:** 0 migrations, 0 deep elaborations.
-
-*Why before decay experiment:* closed perturbations must run in a clean environment before memory accumulation from open perturbation runs contaminates the baseline.
-
----
-
-### Phase 10 — Memory decay experiment
-
-**Hypothesis:** there exists an intermediate decay rate that maximizes exploration (migration rate) without collapsing structural coherence.
-
-**Protocol:** modify `MEMORY_CONSOLIDATED_DECAY` in `config.py` and run perturbation 1 under three configurations:
-
-```
-Fast decay    →  0.50  (aggressive forgetting)
-Standard      →  0.80  (current config)
-Slow decay    →  0.95  (strong memory retention)
-```
-
-5 runs per configuration with Redis accumulated between runs. Compare: migration rate, active tensions at close, synthesis count, sustained top_tension_score in c10–20.
-
-**Expected result:** a curve between 0% migration (full memory) and ~27% (cleared Redis). The sweet spot is the core finding for Article 3.
 
 ---
 
